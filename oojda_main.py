@@ -42,24 +42,21 @@ Some modules may have dependencies on external libraries.
 Refer to the module documentation for details.
 """
 
-# Include built-in types.
-from typing import Literal
-
 # Include custom packages and modules.
 from src.app.shuttle.oojda_control_panel.oojda_control_panel import OojdaControlPanel
 from src.app.utility.handler.log_handler.log_handler import LogHandler
 
 # Include Metadata.
-__author__: Literal["Reginald Sahil Chand"]
-__maintainer__: Literal["ReginaldSahilChand"]
-__credits__: list[str] = ["Reginald Sahil Chand"]
-__email__: Literal["Developer.ReginaldSahilChand@gmail.com"]
+__author__ = "Reginald Sahil Chand"
+__maintainer__ = "ReginaldSahilChand"
+__credits__ = "Reginald Sahil Chand"
+__email__ = "Developer.ReginaldSahilChand@gmail.com"
 
-__version__: Literal["0.1.0"]
-__license__: Literal["General Public License Version 3.0"]
-__copyright__: Literal["Copyright 2024, Reginald Sahil Chand"]
+__version__ = "0.1.0"
+__license__ = "General Public License Version 3.0"
+__copyright__ = "Copyright 2024, Reginald Sahil Chand"
 
-__status__: Literal["Development"]
+__status__ = "Development"
 
 
 def start_engine_oojda_main() -> None:
