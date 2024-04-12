@@ -72,7 +72,7 @@ class InputHandler(AbstractInputHandler):
 
     def create_input(self, input_type: str,
                      input_display_message: str = "") ->  (str | int| float | bool | None):
-        """Create a log with the given log type and log message.
+        """Create a input with the given input type and an optional input display message.
         
         Args:
         - input_type: (str) -> The input type required to create a user input.
