@@ -48,6 +48,9 @@ Refer to the module documentation for details.
 # Include built-in packages and modules.
 from dataclasses import dataclass
 
+# Include custom packages and modules.
+from src.app.shuttle.window.screen.welcome_screen.welcome_screen import WelcomeScreen
+
 
 @dataclass
 class OojdaControlPanel:
@@ -67,6 +70,10 @@ class OojdaControlPanel:
         - The sequence must not be changed to avoid unwanted behavior.
         - Remember do not play with the space shuttle launch sequencer in the middle of launch.
         """
+
+        # Instantiate classes.
+        welcome_screen = WelcomeScreen()
+        welcome_screen.create_welcome_screen()
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
