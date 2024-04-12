@@ -70,24 +70,22 @@ class LogHandler(AbstractLogHandler):
                 error(msg="Log message cannot be empty.")
                 raise ValueError("Log message cannot be empty.")
 
-            if log_type == self._log_type_error:
-                # Create a error log with the given log message.
-                error(msg=log_message)
+            match log_type:
+                case self._log_type_error:
+                    error(msg=log_message)
 
-            elif log_type == self._log_type_warning:
-                # Create a warning log with the given warning message.
-                warning(msg=log_message)
+                case self._log_type_warning:
+                    warning(msg=log_message)
 
-            elif log_type == self._log_type_info:
-                # Create an info log with the given info message.
-                info(msg=log_message)
+                case self._log_type_info:
+                    info(msg=log_message)
 
-            else:
-                error(msg="The provided type does not meet the required log_type")
-                raise TypeError(
-                    "The provided type does not meet the required log_type: ",
-                    f"{self._log_type_error}, or {self._log_type_warning}, "
-                    f"or {self._log_type_info}")
+                case _:
+                    error(msg="The provided type does not meet the required log_type")
+                    raise TypeError(
+                            "The provided type does not meet the required log_type: ",
+                            f"{self._log_type_error}, or {self._log_type_warning}, "
+                            f"or {self._log_type_info}")
 
         except ValueError:
             error(msg="Please re-check your \"log_message\" parameter.")
