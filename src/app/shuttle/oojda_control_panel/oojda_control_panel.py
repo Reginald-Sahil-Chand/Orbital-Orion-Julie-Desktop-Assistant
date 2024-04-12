@@ -48,21 +48,6 @@ Refer to the module documentation for details.
 # Include built-in packages and modules.
 from dataclasses import dataclass
 
-# Include built-in types.
-from typing import Literal
-
-# Include custom packages and modules.
-
-# Include Metadata.
-__author__: Literal["Reginald Sahil Chand"]
-__maintainer__: Literal["ReginaldSahilChand"]
-__credits__: list[str] = ["Reginald Sahil Chand"]
-__email__: Literal["Developer.ReginaldSahilChand@gmail.com"]
-
-__version__: Literal["0.1.0"]
-__license__: Literal["General Public License Version 3.0"]
-__copyright__: Literal["Copyright 2024, Reginald Sahil Chand"]
-
 
 @dataclass
 class OojdaControlPanel:
