@@ -63,7 +63,16 @@ class LogHandler(AbstractLogHandler):
     _log_type_info: str = "info"
 
     def create_log(self, log_type: str, log_message: str = "Log message is undefined.") -> None:
-        """Create a log with the given log type and log message."""
+        """Create a log with the given log type and log message.
+        
+        Args:
+        - log_type: (str) -> The type of log required to create a log.
+        - Example: error, warning or info.
+        - log_message: (str) -> The message required to tell more about the log.
+        - Default Log Message: Log message is undefined.
+        
+        Returns: None
+        """
 
         try:
             if not log_message.strip():
