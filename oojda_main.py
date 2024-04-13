@@ -83,7 +83,7 @@ def start_engine_oojda_main() -> None:
     # Define error and warning messages.
     _system_error_message: str = "Alert, There has been a malfunction in the system: "
     _keyboard_interrupt_message: str = """Mission Abort: Orbital Orion's Desktop Assistant
- Julie Has Been Terminated.
+Julie Has Been Terminated.
 \nYou have entered Ctrl + C hence the program has terminated.
 """
 
