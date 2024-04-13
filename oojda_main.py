@@ -75,10 +75,10 @@ def start_engine_oojda_main() -> None:
     """
 
     # Instantiate OojdaControlPanel.
-    oojda_controller = OojdaControlPanel()
+    oojda_controller: OojdaControlPanel = OojdaControlPanel()
 
     # Instantiate LogHandler.
-    log_handler = LogHandler()
+    log_handler: LogHandler = LogHandler()
 
     # Define error and warning messages.
     _system_error_message: str = "Alert, There has been a malfunction in the system: "
