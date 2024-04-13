@@ -43,7 +43,10 @@ Refer to the module documentation for details.
 """
 
 # Include built-in packages and modules.
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+# Include built-in types.
+from typing import Dict
 
 # Include custom packages and modules.
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_input_handler\
@@ -56,19 +59,35 @@ class InputHandler(AbstractInputHandler):
     """A input class inheriting AbstractInputHandler abstract class for handling user inputs."""
 
     # Instantiate LogHandler.
-    log_handler = LogHandler()
+    _log_handler:LogHandler = field(default_factory=LogHandler)
 
-    available_input_types = {
+    _available_input_types: Dict[str, type] = field(default_factory=lambda: {
         "str": str,
         "int": int,
         "float": float,
         "bool": bool
-    }
+    })
 
-    store_available_input_types = set(available_input_types)
+    _store_available_input_types: tuple[str, ...] = ()
 
     # You can also import and use the Union type. (Both does the same thing).
-    input_value: (str | int | float | bool) = ""
+    _store_input_value: (str | int | float | bool) = ""
+
+    _input_type_mismatch_error_message: str = ""
+
+    _input_value: str = ""
+
+    # Use post init, other wise the interpreter will not know if the object is initialized.
+    # It is used to actually populate the _available_input_types keys in
+    # _store_available_input_types after InputHandler class initialization.
+    # * We need to use __post_init__ to inform filed that the class is now initialized,
+    # * Hence return the values.
+    def __post_init__(self):
+        self._store_available_input_types: tuple[str, ...] = (
+            tuple(self._available_input_types.keys()))
+
+        self._input_type_mismatch_error_message = (
+        f"Alert! Type Mismatch. Allowed types are: {self._store_available_input_types}")
 
     def create_input(self, input_type: str,
                      input_display_message: str = "") ->  (str | int| float | bool | None):
@@ -79,30 +98,39 @@ class InputHandler(AbstractInputHandler):
         - input_display_message: (str) -> The message for the user to know what to enter,
         in the input field.
         
-        Returns: (str | int| float | bool | None)
+        Returns: (str | int | float | bool | None)
         """
 
         try:
             if not input_type.strip():
-                self.log_handler.create_log(
+                self._log_handler.create_log(
                     log_type="error",
-                    log_message=f"Input type cannot be empty.\n"
-                    f"Allowed input types: {self.store_available_input_types}")
+                    log_message="Please note that the input type cannot be empty.")
 
-                raise ValueError(
-                    f"Input type cannot be empty.\n"
-                    f"Allowed input types: {self.store_available_input_types}")
+                raise ValueError("Please note that the input type cannot be empty.")
 
-            input_converter: type[str] | type[int] | type[float] | type[bool] | None = (
-                self.available_input_types.get(input_type))
+            if input_type not in self._available_input_types:
+                self._log_handler.create_log(
+                    log_type="error",
+                    log_message=self._input_type_mismatch_error_message)
 
-            if input_converter is None:
-                raise TypeError(
-                    f"Invalid input type: {input_type}\n"
-                    f"Allowed input types: {self.store_available_input_types}")
+                raise TypeError(self._input_type_mismatch_error_message)
 
-            self.input_value = input_converter(input(input_display_message))
-            return self.input_value
+            # Ask the user to enter an input
+            self._input_value = input(input_display_message)
+
+            # Check if the input type equals the available input types,
+            # And convert the inputs respectively.
+            for index, _ in enumerate(self._store_available_input_types):
+                if self._store_available_input_types[index] == input_type:
+                    self._store_input_value = (
+                        self._available_input_types[input_type](self._input_value))
+
+            return self._store_input_value
 
         except ValueError:
-            return "No valid input identified."
+            self._log_handler.create_log(
+                    log_type="error",
+                    log_message="Alert! provided input value is invalid.")
+
+            return "Alert! provided input value is invalid."
