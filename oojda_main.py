@@ -6,7 +6,7 @@ All the functions, variables, and class names used are meaning full but follows 
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
 oojda_main.py:
-========
+==============
 Controls the execution of the overall software.
 Can be referred to as the entry point for the Orbital Orion - Julie Desktop Assistant.
 
