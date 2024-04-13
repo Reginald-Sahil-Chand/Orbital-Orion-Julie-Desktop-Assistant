@@ -72,7 +72,7 @@ class OojdaControlPanel:
         """
 
         # Instantiate classes.
-        welcome_screen = WelcomeScreen()
+        welcome_screen: WelcomeScreen = WelcomeScreen()
         welcome_screen.create_welcome_screen()
 
     @staticmethod
