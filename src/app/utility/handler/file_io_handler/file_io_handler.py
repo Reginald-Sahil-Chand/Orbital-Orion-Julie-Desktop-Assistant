@@ -9,17 +9,6 @@ file_io_handler.py:
 ===================
 This file contains FileIoHandler class, responsible to handle file operations.
 
-Overview:
-=========
-This class consists of one contact method named: create_file_operation(arguments).
-Returns the file content or none.
-
-Usage:
-======
-1. Inherit AbstractFileIoHandler and implement the abstract method
-to define custom file operation handling behavior.
-2. Instantiate the subclass to use the implemented file operation handling functionality.
-
 Guidelines:
 ===========
 Import Statement Guidelines:

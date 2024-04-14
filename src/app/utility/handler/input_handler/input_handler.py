@@ -7,20 +7,7 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 input_handler.py:
 =================
-The input_handler utility class.
-This class houses only one method that the input_handler must implement before instantiation.
-
-Overview:
-=========
-This class consists of one method named:
-create_input(input_type: str, input_display_message: str = ""):
-Returns the input value.
-
-Usage:
-======
-1. Inherit AbstractInputHandler and implement the abstract method to define custom input type
-handling behavior.
-2. Instantiate the subclass to use the implemented input handling functionality.
+This file contains InputHandler class, responsible to handle user inputs.
 
 Guidelines:
 ===========
@@ -94,11 +81,11 @@ class InputHandler(AbstractInputHandler):
         """Create a input with the given input type and an optional input display message.
         
         Args:
-        - input_type: (str) -> The input type required to create a user input.
-        - input_display_message: (str) -> The message for the user to know what to enter,
+        - input_type (str): The input type required to create a user input.
+        - input_display_message (str): The message for the user to know what to enter,
         in the input field.
         
-        Returns: (str | int | float | bool | None)
+        Returns (str | int | float | bool | None): User's entered input value.
         """
 
         try:

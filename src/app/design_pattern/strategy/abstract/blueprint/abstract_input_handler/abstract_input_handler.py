@@ -8,19 +8,6 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 abstract_input_handler.py:
 ========================
 Acts as a blueprint for the input_handler utility class.
-This class houses only one method that the input_handler must implement before instantiation.
-
-Overview:
-=========
-This class consists of one abstract method named:
-create_input(input_type: str, input_display_message: str = ""):
-Returns the input value.
-
-Usage:
-======
-1. Inherit AbstractInputHandler and implement the abstract method to define custom input type
-handling behavior.
-2. Instantiate the subclass to use the implemented input handling functionality.
 
 Guidelines:
 ===========

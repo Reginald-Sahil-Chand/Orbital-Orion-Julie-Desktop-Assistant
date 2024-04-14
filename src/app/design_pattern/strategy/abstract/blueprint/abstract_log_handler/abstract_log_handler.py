@@ -8,19 +8,6 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 abstract_log_handler.py:
 ========================
 Acts as a blueprint for the log_handler utility class.
-This class houses only one method that the log_handler must implement before instantiation.
-
-Overview:
-=========
-This class consists of one abstract method named:
-create_log(log_type: str, log_message: str = "Log message is undefined."):
-Creates a log with the given message.
-
-Usage:
-======
-1. Inherit AbstractLogHandler and implement the abstract method to define custom log
-handling behavior.
-2. Instantiate the subclass to use the implemented log handling functionality.
 
 Guidelines:
 ===========

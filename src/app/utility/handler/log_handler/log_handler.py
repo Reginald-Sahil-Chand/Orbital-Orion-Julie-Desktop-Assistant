@@ -7,20 +7,7 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 log_handler.py:
 ===============
-The log_handler utility class.
-This class houses one method that the log_handler must implement before instantiation.
-
-Overview:
-=========
-This class consists of one method named:
-create_log(log_type: str, log_message: str = "Log message is undefined."):
-Creates a log with the given message. (This method represents the abstract method).
-
-Usage:
-======
-1. Inherit AbstractLogHandler and implement the abstract method to define custom log
-handling behavior.
-2. Instantiate the subclass to use the implemented log handling functionality.
+This file contains LogHandler class, responsible to handle log creation and log outputs.
 
 Guidelines:
 ===========
@@ -66,10 +53,10 @@ class LogHandler(AbstractLogHandler):
         """Create a log with the given log type and log message.
         
         Args:
-        - log_type: (str) -> The type of log required to create a log.
+        - log_type (str): The type of log required to create a log.
         - Example: error, warning or info.
-        - log_message: (str) -> The message required to tell more about the log.
-        - Default Log Message: Log message is undefined.
+        - log_message (str): The message required to tell more about the log.
+        - Default Log Message (str): Log message is undefined.
         
         Returns: None
         """

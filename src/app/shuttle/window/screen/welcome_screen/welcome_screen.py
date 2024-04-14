@@ -9,12 +9,6 @@ welcome_screen.py:
 ==================
 Displays a welcome message when the program starts.
 
-Usage:
-======
-This module consists of one static method named create_welcome_screen.
-This method as the name suggests is responsible to create a welcome screen
-and display a welcome message.
-
 Guidelines:
 ===========
 Import Statement Guidelines:
@@ -41,7 +35,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class WelcomeScreen:
-    """Class to initiate the welcome screen creation"""
+    """Class to initiate the welcome screen creation."""
 
     @staticmethod
     def create_welcome_screen() -> None:
