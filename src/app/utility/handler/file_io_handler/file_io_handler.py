@@ -2,7 +2,7 @@
 Fun Fact:
 =========
 This software is based on a space theme.
-All the functions, variables, and class names used are meaning full but follows a space theme.
+All the functions, variables, and class names used are meaningful and follows a space theme.
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
 file_io_handler.py:
@@ -36,6 +36,10 @@ from dataclasses import dataclass, field
 from src.app.design_pattern.adapter.abstract.blueprint.abstract_file_io_handler\
     .abstract_file_io_handler import AbstractFileIoHandler
 from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler.directory_io_handler.directory_io_handler import DirectoryIoHandler
+from src.app.utility.helpers.validation.custom_value_and_type_validation\
+    .custom_value_and_type_validation import validate_if_value_is_empty,\
+        validate_if_type_does_not_match, validate_file_contents
 
 
 # Define custom csv file exception.
@@ -44,20 +48,19 @@ from src.app.utility.handler.log_handler.log_handler import LogHandler
 class FileTypeWillBeSupportedSoonError(Exception):
     """Class to handle CSV File unsupported error."""
 
-
 @dataclass
 class FileIoHandler(AbstractFileIoHandler):
     """Class to handle create_file_operation instantiation."""
 
-    # Instantiate LogHandler
+    # Instantiate LogHandler.
     log_handler: LogHandler = field(default_factory=LogHandler)
 
+    # Instantiate DirectoryHandler.
+    directory_io_handler: DirectoryIoHandler = field(default_factory=DirectoryIoHandler)
+
     def create_file_operation(self,
-                              file_type: str,
-                              file_path: str,
-                              file_mode: str,
-                              file_contents: (str | dict[str, str])) -> (
-                                  (str | dict[str, str] | None)):
+                              file_contents: (str | dict[str, str]),
+                              **kwargs: str) -> (str | dict[str, str] | None):
         """This method is responsible for creating the file operations.
 
         File operations in this context are as follows:
@@ -67,6 +70,16 @@ class FileIoHandler(AbstractFileIoHandler):
 
         Args:
             - self (Self@AbstractFileIoHandler): Refers to the base class.
+            - file_contents (str): File contents refer to the content of the file.
+                    - Here content means when you are creating a file, reading or writing a file,
+                    what does the file contain, this can be a list of items, block of text or,
+                    basically anything, just like notes.
+
+        Kwargs:
+            - directory_name_or_name_with_path (str): Directory path refers to the path
+            where the file will be created or read from that includes the creation of the
+            directory if it doesn't exists.
+
             - file_type (str): There are three currently supported file types:
                 - File Type [1]: text.
                 - File Type [1]: json.
@@ -85,11 +98,6 @@ class FileIoHandler(AbstractFileIoHandler):
                     - File Mode [1]: "r" => read file.
                     - File Mode [2]: "w" => write file.
                     - File Mode [3]: "a" => append to current existing file.
-
-            - file_contents (str): File contents refer to the content of the file.
-                - Here content means when you are creating a file, reading or writing a file,
-                what does the file contain, this can be a list of items, block of text or,
-                basically anything, just like notes.
 
         Returns:
             - (str | dict[str, str] | None)
@@ -115,41 +123,36 @@ class FileIoHandler(AbstractFileIoHandler):
             }
         }
 
+        # Define default values for the used keyword arguments.
+        directory_name_or_name_with_path = kwargs.get("directory_path", "")
+        file_type = kwargs.get("file_type", "")
+        file_path = kwargs.get("file_path", "")
+        file_mode = kwargs.get("file_mode", "")
+
         # Error handling.
         _file_types = list(key for key in _file_data["file_types"])
         _file_modes = list(key for key in _file_data["file_modes"].values())
         _min_file_contents_length = 1
 
-        if file_type not in _file_types:
-            raise TypeError(f"The given file type does not match the expected types: {_file_types}")
-
         if file_type == _file_data["file_types"]["csv"]:
             raise FileTypeWillBeSupportedSoonError(
                 "CSV File type will be supported soon. Sorry for the inconvenience caused.")
 
-        if not file_path.strip():
-            raise ValueError("Please note that the file path cannot be empty.")
-
-        if file_mode not in _file_modes:
-            raise TypeError(f"The given file mode does not match the expected modes: {_file_modes}")
-
-        if isinstance(file_contents, str):
-            if not file_contents.strip():
-                raise ValueError("Please note that the file contents cannot be empty.")
-
-        if isinstance(file_contents, dict):
-            if len(file_contents) < _min_file_contents_length:
-                raise ValueError("Please note that the file contents cannot be empty.")
-
-            for key, value in file_contents.items():
-                if not key.strip():
-                    raise KeyError("Please note that the key cannot be empty.")
-
-                if not value.strip():
-                    raise ValueError("Please note that the value cannot be empty.")
+        # Invoke custom value and type validation functions.
+        # * Refer to utility/helpers/validation folder(s) to learn more.
+        validate_if_value_is_empty(value=directory_name_or_name_with_path)
+        validate_if_type_does_not_match(given_type=file_type, supported_types=_file_types)
+        validate_if_value_is_empty(value=file_path)
+        validate_if_type_does_not_match(given_type=file_mode, supported_types=_file_modes)
+        validate_file_contents(file_contents=file_contents,
+                               min_file_contents_length=_min_file_contents_length)
 
         try:
-            self.adapter_creates_file(file_type, file_path, file_mode, file_contents)
+            self.directory_io_handler.create_directory(
+                directory_path=directory_name_or_name_with_path)
+
+            self.adapter_creates_file(file_type=file_type, file_path=file_path,
+                                      file_mode=file_mode, file_contents=file_contents)
             print(f"File successfully created at. {file_path}")
             self._log_handler.create_log(
                 log_type="info",
