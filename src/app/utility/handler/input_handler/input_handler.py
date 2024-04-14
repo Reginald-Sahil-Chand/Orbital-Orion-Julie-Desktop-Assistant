@@ -2,7 +2,7 @@
 Fun Fact:
 =========
 This software is based on a space theme.
-All the functions, variables, and class names used are meaning full but follows a space theme.
+All the functions, variables, and class names used are meaningful and follows a space theme.
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
 input_handler.py:
