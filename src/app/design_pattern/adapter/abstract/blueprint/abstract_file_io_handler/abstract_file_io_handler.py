@@ -84,13 +84,7 @@ class AbstractFileIoHandler(ABC):
                 - File Type [1]: json.
                 - File Type [1]: csv. (Support to be added at a later date.)
 
-            - file_path (str): File path refers to the path where the file will be
-            created or read from.
-                - Note that file_path consists of the following in order:
-                    - [1]: File directory.
-                    - [2]: File name.
-                    - [3]: File extension.
-                - Example: src/example.txt
+            - file_name (str): File name refers to the file name. Example file.txt
 
             - file_mode (str): File mode refers to the mode for the file operation.
                 - There are three file modes currently supported:
@@ -201,7 +195,7 @@ class AbstractFileIoHandler(ABC):
     def adapter_creates_file(
             self,
             file_type: str,
-            file_path: str, file_mode: str,
+            file_name: str, file_mode: str,
             file_contents: (str | dict[str, str])) -> (str | dict[str, str] | None):
         """Adapter method to create file based on the provided file type.
         
@@ -212,13 +206,7 @@ class AbstractFileIoHandler(ABC):
                 - File Type [1]: json.
                 - File Type [1]: csv. (Support to be added at a later date.)
 
-            - file_path (str): File path refers to the path where the file will be
-            created or read from.
-                - Note that file_path consists of the following in order:
-                    - [1]: File directory.
-                    - [2]: File name.
-                    - [3]: File extension.
-                - Example: src/example.txt
+            - file_name (str): File name refers to the file name. Example file.txt
 
             - file_mode (str): File mode refers to the mode for the file operation.
                 - There are three file modes currently supported:
@@ -241,6 +229,6 @@ class AbstractFileIoHandler(ABC):
         """
 
         # File creation.
-        with open(file=file_path, mode=file_mode, encoding="UTF-8") as file:
+        with open(file=file_name, mode=file_mode, encoding="UTF-8") as file:
             return self._file_operator(file_type=file_type,
                                        file_mode=file_mode, file=file, file_contents=file_contents)

@@ -31,6 +31,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
+from os import path
 
 # Include custom packages and modules.
 from src.app.design_pattern.adapter.abstract.blueprint.abstract_file_io_handler\
@@ -85,13 +86,7 @@ class FileIoHandler(AbstractFileIoHandler):
                 - File Type [1]: json.
                 - File Type [1]: csv. (Support to be added at a later date.)
 
-            - file_path (str): File path refers to the path where the file will be
-            created or read from.
-                - Note that file_path consists of the following in order:
-                    - [1]: File directory.
-                    - [2]: File name.
-                    - [3]: File extension.
-                - Example: src/example.txt
+            - file_name (str): File name refers to the file name. Example file.txt
 
             - file_mode (str): File mode refers to the mode for the file operation.
                 - There are three file modes currently supported:
@@ -126,7 +121,7 @@ class FileIoHandler(AbstractFileIoHandler):
         # Define default values for the used keyword arguments.
         directory_name_or_name_with_path = kwargs.get("directory_path", "")
         file_type = kwargs.get("file_type", "")
-        file_path = kwargs.get("file_path", "")
+        file_name = kwargs.get("file_path", "")
         file_mode = kwargs.get("file_mode", "")
 
         # Error handling.
@@ -142,21 +137,23 @@ class FileIoHandler(AbstractFileIoHandler):
         # * Refer to utility/helpers/validation folder(s) to learn more.
         validate_if_value_is_empty(value=directory_name_or_name_with_path)
         validate_if_type_does_not_match(given_type=file_type, supported_types=_file_types)
-        validate_if_value_is_empty(value=file_path)
+        validate_if_value_is_empty(value=file_name)
         validate_if_type_does_not_match(given_type=file_mode, supported_types=_file_modes)
         validate_file_contents(file_contents=file_contents,
                                min_file_contents_length=_min_file_contents_length)
+
+        _file_name_with_path = path.join(directory_name_or_name_with_path, file_name)
 
         try:
             self.directory_io_handler.create_directory(
                 directory_path=directory_name_or_name_with_path)
 
-            self.adapter_creates_file(file_type=file_type, file_path=file_path,
+            self.adapter_creates_file(file_type=file_type, file_name=_file_name_with_path,
                                       file_mode=file_mode, file_contents=file_contents)
-            print(f"File successfully created at. {file_path}")
+            print(f"File successfully created at. {_file_name_with_path}")
             self._log_handler.create_log(
                 log_type="info",
-                log_message=f"File successfully created at. {file_path}")
+                log_message=f"File successfully created at. {_file_name_with_path}")
 
         except FileNotFoundError as err:
             self._log_handler.create_log(
