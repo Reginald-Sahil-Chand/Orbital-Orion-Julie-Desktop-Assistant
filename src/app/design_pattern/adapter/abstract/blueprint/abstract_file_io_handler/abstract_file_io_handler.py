@@ -58,11 +58,8 @@ class AbstractFileIoHandler(ABC):
 
     @abstractmethod
     def create_file_operation(self,
-                              file_type: str,
-                              file_path: str,
-                              file_mode: str,
-                              file_contents: (str | dict[str, str])) -> (
-                                  (str | dict[str, str] | None)):
+                              file_contents: (str | dict[str, str]),
+                              **kwargs: str) -> (str | dict[str, str] | None):
         """This method is responsible for creating the file operations.
 
         File operations in this context are as follows:
@@ -72,6 +69,16 @@ class AbstractFileIoHandler(ABC):
 
         Args:
             - self (Self@AbstractFileIoHandler): Refers to the base class.
+            - file_contents (str): File contents refer to the content of the file.
+                    - Here content means when you are creating a file, reading or writing a file,
+                    what does the file contain, this can be a list of items, block of text or,
+                    basically anything, just like notes.
+
+        Kwargs:
+            - directory_name_or_name_with_path (str): Directory path refers to the path
+            where the file will be created or read from that includes the creation of the
+            directory if it doesn't exists.
+
             - file_type (str): There are three currently supported file types:
                 - File Type [1]: text.
                 - File Type [1]: json.
@@ -90,11 +97,6 @@ class AbstractFileIoHandler(ABC):
                     - File Mode [1]: "r" => read file.
                     - File Mode [2]: "w" => write file.
                     - File Mode [3]: "a" => append to current existing file.
-
-            - file_contents (str): File contents refer to the content of the file.
-                - Here content means when you are creating a file, reading or writing a file,
-                what does the file contain, this can be a list of items, block of text or,
-                basically anything, just like notes.
 
         Returns:
             - (str | dict[str, str] | None)
