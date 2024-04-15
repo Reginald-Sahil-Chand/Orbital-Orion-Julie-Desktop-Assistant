@@ -59,6 +59,9 @@ class FileIoHandler(AbstractFileIoHandler):
     # Instantiate DirectoryHandler.
     directory_io_handler: DirectoryIoHandler = field(default_factory=DirectoryIoHandler)
 
+    # Stores file contents.
+    returned_file_contents = {}
+
     def create_file_operation(self,
                               file_contents: (str | dict[str, str]),
                               **kwargs: str) -> (str | dict[str, str] | None):
@@ -121,7 +124,7 @@ class FileIoHandler(AbstractFileIoHandler):
         # Define default values for the used keyword arguments.
         directory_name_or_name_with_path = kwargs.get("directory_path", "")
         file_type = kwargs.get("file_type", "")
-        file_name = kwargs.get("file_path", "")
+        file_name = kwargs.get("file_name", "")
         file_mode = kwargs.get("file_mode", "")
 
         # Error handling.
@@ -148,14 +151,13 @@ class FileIoHandler(AbstractFileIoHandler):
             self.directory_io_handler.create_directory(
                 directory_path=directory_name_or_name_with_path)
 
-            self.adapter_creates_file(file_type=file_type, file_name=_file_name_with_path,
+            self.returned_file_contents = self.adapter_creates_file(
+                file_type=file_type, file_name=_file_name_with_path,
                                       file_mode=file_mode, file_contents=file_contents)
-            print(f"File successfully created at. {_file_name_with_path}")
-            self._log_handler.create_log(
-                log_type="info",
-                log_message=f"File successfully created at. {_file_name_with_path}")
 
         except FileNotFoundError as err:
             self._log_handler.create_log(
                 log_type="error",
                 log_message=f"File not found. Possible missing directory. {err}")
+
+        return self.returned_file_contents
