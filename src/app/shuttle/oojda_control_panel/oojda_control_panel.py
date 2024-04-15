@@ -50,6 +50,7 @@ from dataclasses import dataclass
 
 # Include custom packages and modules.
 from src.app.shuttle.window.screen.welcome_screen.welcome_screen import WelcomeScreen
+from src.app.shuttle.user_information.user_information import UserInformation
 
 
 @dataclass
@@ -74,6 +75,9 @@ class OojdaControlPanel:
         # Instantiate classes.
         welcome_screen: WelcomeScreen = WelcomeScreen()
         welcome_screen.create_welcome_screen()
+
+        user_information: UserInformation = UserInformation()
+        user_information.create_user_information()
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
