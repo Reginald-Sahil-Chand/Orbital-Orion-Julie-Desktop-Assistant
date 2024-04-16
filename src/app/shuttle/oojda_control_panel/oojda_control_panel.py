@@ -51,6 +51,7 @@ from dataclasses import dataclass
 # Include custom packages and modules.
 from src.app.shuttle.window.screen.welcome_screen.welcome_screen import WelcomeScreen
 from src.app.shuttle.user_information.user_information import UserInformation
+from src.app.utility.handler.voice_io_handler.voice_io_handler import VoiceIoHandler
 
 
 @dataclass
@@ -78,6 +79,11 @@ class OojdaControlPanel:
 
         user_information: UserInformation = UserInformation()
         user_information.create_user_information()
+
+        # Assign a variable to voice_io_handler.get_voice_input() to retrieve the returned,
+        # Voice input value. (What you said is what you will get returned most of the time.)
+        voice_io_handler: VoiceIoHandler = VoiceIoHandler()
+        voice_io_handler.get_voice_input()
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
