@@ -173,7 +173,7 @@ class UserInformation:
             user_name: str =  user_data_dict["Username"]
             user_name_words: list[str] = user_name.split()
 
-            print(f"Welcome {user_name}")
+            print(f"Welcome {user_name}\n")
 
             self._text_to_speech_handler.create_text_to_speech_announcer(
-                text_to_produce_speech=f"Hello {user_name_words[0]}.\n")
+                text_to_produce_speech=f"Hello {user_name_words[0]}.")
