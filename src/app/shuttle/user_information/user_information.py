@@ -146,13 +146,13 @@ class UserInformation:
             print(f"Welcome {user_name}")
 
             user_name_words: list[str] = user_name.split()
-            welcome_text:str = f"""Welcome {user_name_words[0]}.
+            welcome_text:str = f"""Welcome to {user_name_words[0]}.
             I'm Julie, your personal desktop assistant.
-            I was created by Reginald Sahil Chand.
-            How may I help you today?
+            I was created by Reginald Sahil Chand as a personal project.
             """
 
-            self._text_to_speech_handler.create_text_to_speech_announcer(welcome_text)
+            self._text_to_speech_handler.create_text_to_speech_announcer(
+                text_to_produce_speech=welcome_text)
 
         else:
             created_user_info = self._handle_file_creation.create_file_operation(
@@ -176,4 +176,4 @@ class UserInformation:
             print(f"Welcome {user_name}")
 
             self._text_to_speech_handler.create_text_to_speech_announcer(
-                f"Hello {user_name_words[0]}. How may I help you today?")
+                text_to_produce_speech=f"Hello {user_name_words[0]}.")
