@@ -75,7 +75,7 @@ class VoiceIoHandler:
 
         # Define announcement messages.
         noise_adjustment_message: str = (
-            "A moment of silence please. Initiating adjustment for ambient noise.")
+            "A moment of silence please. Doing adjustments for ambient noise.")
         how_may_i_help_you_message: str = "How may I help you?\n"
         recognizing_voice_input_message: str = "Got it! Please wait. Recognizing voice input."
         voice_input_recognized_message: str = "You said"
@@ -90,8 +90,8 @@ class VoiceIoHandler:
         # * You can use these words to implement functionalities to only respond
         # * If voice_input_value matches any of these words.
         wake_words: list[str] = [
-            "hi", "hey", "hello", "julie",
-            "hi julie", "hello julie", "hey Julie"
+            "hi", "hey", "hello", "Julie",
+            "hi Julie", "hello Julie", "hey Julie"
         ]
 
         greetings: list[str] = [
