@@ -14,8 +14,8 @@ Guidelines:
 Import Statement Guidelines:
 ============================
 Absolute imports are preferred over relative imports for better clarity and consistency.
-Built-in Python modules appear first, followed by external modules with a one-line gap,
-then internal and external types, and finally custom modules.
+Built-in Python modules appear first, followed by internal types with a one-line gap,
+then external modules and external types, and finally custom modules.
 
 Usage Notes:
 ============
