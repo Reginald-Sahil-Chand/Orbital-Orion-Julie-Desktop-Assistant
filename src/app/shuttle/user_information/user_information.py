@@ -14,8 +14,8 @@ Guidelines:
 Import Statement Guidelines:
 ============================
 Absolute imports are preferred over relative imports for better clarity and consistency.
-Built-in Python modules appear first, followed by external modules with a one-line gap,
-then internal and external types, and finally custom modules.
+Built-in Python modules appear first, followed by internal types with a one-line gap,
+then external modules and external types, and finally custom modules.
 
 Usage Notes:
 ============
@@ -38,6 +38,8 @@ from json import loads
 from src.app.utility.handler.input_handler.input_handler import InputHandler
 from src.app.utility.handler.file_io_handler.file_io_handler import FileIoHandler
 from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler.text_to_speech_handler.text_to_speech_handler\
+    import TextToSpeechHandler
 
 
 @dataclass
@@ -58,6 +60,9 @@ class UserInformation:
 
     # Instantiate LogHandler.
     _log_handler: LogHandler =  field(default_factory=LogHandler)
+
+    # Instantiate TextToSpeechHandler.
+    _text_to_speech_handler: TextToSpeechHandler =  field(default_factory=TextToSpeechHandler)
 
     def _set_user_name(self) -> str:
         """Method to ask the user to enter username.
@@ -138,6 +143,17 @@ class UserInformation:
                 log_type="info",
                 log_message=f"User {user_name} has been successfully created.")
 
+            print(f"Welcome {user_name}")
+
+            user_name_words: list[str] = user_name.split()
+            welcome_text:str = f"""Welcome {user_name_words[0]}.
+            I'm Julie, your personal desktop assistant.
+            I was created by Reginald Sahil Chand.
+            How may I help you today?
+            """
+
+            self._text_to_speech_handler.create_text_to_speech_announcer(welcome_text)
+
         else:
             created_user_info = self._handle_file_creation.create_file_operation(
                     file_contents="Read File",
@@ -155,5 +171,9 @@ class UserInformation:
 
             # Get the user name.
             user_name: str =  user_data_dict["Username"]
+            user_name_words: list[str] = user_name.split()
 
             print(f"Welcome {user_name}")
+
+            self._text_to_speech_handler.create_text_to_speech_announcer(
+                f"Hello {user_name_words[0]}. How may I help you today?")
