@@ -36,6 +36,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
+import logging
 
 # Include internal typings.
 from typing import Any
@@ -45,6 +46,12 @@ import pyttsx3 # type: ignore
 
 # Include custom packages and modules.
 from src.app.utility.handler.log_handler.log_handler import LogHandler # type: ignore
+
+# * DISABLE THE LOGS.
+# ! ALERT: ONLY DISABLE THE LOGS IN PRODUCTION. DO NOT DISABLE ELSE, OTHERWISE,
+# ! ALERT: IT MAY BE HARD FOR YOU TO DEBUG ERRORS.
+# * TO ENABLE LOGGING SIMPLY COMMENT "logging.disable()"
+logging.disable()
 
 
 @dataclass
