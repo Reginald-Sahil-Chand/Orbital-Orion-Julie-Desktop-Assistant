@@ -176,4 +176,4 @@ class UserInformation:
             print(f"Welcome {user_name}")
 
             self._text_to_speech_handler.create_text_to_speech_announcer(
-                text_to_produce_speech=f"Hello {user_name_words[0]}.")
+                text_to_produce_speech=f"Hello {user_name_words[0]}.\n")
