@@ -33,6 +33,8 @@ Refer to the module documentation for details.
 from dataclasses import dataclass, field
 import re
 from json import loads
+from os.path import exists
+
 
 # Include internal typings.
 from typing import Dict, List
@@ -66,6 +68,9 @@ class UserInformation:
 
     # Instantiate TextToSpeechHandler.
     _text_to_speech_handler: TextToSpeechHandler =  field(default_factory=TextToSpeechHandler)
+
+    # The user configuration data, default file path.
+    _file_path: str = "oojda/data/configs/user/user_info.json"
 
     def _set_user_name(self) -> str:
         """Method to ask the user to enter username.
@@ -107,22 +112,7 @@ class UserInformation:
     def create_user_information(self) -> None:
         """Method to save the username to the required config file and display it on console."""
 
-        initial_program_run: (str | Dict[str, str] | None) = (
-            self._handle_file_creation.create_file_operation(
-                    file_contents="Read File",
-                    directory_path="src/data/configs/oojda",
-                    file_type="text",
-                    file_name="InitialRun.txt",
-                    file_mode="r"))
-
-        if initial_program_run == "False":
-            self._handle_file_creation.create_file_operation(
-                    file_contents="True",
-                    directory_path="src/data/configs/oojda",
-                    file_type="text",
-                    file_name="InitialRun.txt",
-                    file_mode="w")
-
+        if not exists(self._file_path):
             user_name: str = self._set_user_name()
 
             user_data: Dict[str, str] = {}
@@ -137,7 +127,7 @@ class UserInformation:
 
             self._handle_file_creation.create_file_operation(
                     file_contents=user_data,
-                    directory_path="src/data/configs/user",
+                    directory_path="oojda/data/configs/user",
                     file_type="json",
                     file_name="user_info.json",
                     file_mode="w")
@@ -146,10 +136,12 @@ class UserInformation:
                 log_type="info",
                 log_message=f"User {user_name} has been successfully created.")
 
-            print(f"Welcome {user_name}")
+            print(f"Welcome {user_name}\n")
 
             user_name_words: List[str] = user_name.split()
-            welcome_text:str = """Welcome to Orbital Orion's Julie Desktop Assistant.
+
+            welcome_text:str = f"""Hello {user_name_words[0]}.
+            Welcome to Orbital Orion's Julie Desktop Assistant.
             I'm Julie, your personal desktop assistant.
             I was created by Reginald Sahil Chand as a personal project.
             """
@@ -160,17 +152,13 @@ class UserInformation:
         else:
             created_user_info = self._handle_file_creation.create_file_operation(
                     file_contents="Read File",
-                    directory_path="src/data/configs/user",
+                    directory_path="oojda/data/configs/user",
                     file_type="json",
                     file_name="user_info.json",
                     file_mode="r")
 
             # Load json file as a python dictionary.
             user_data_dict: Dict[str, str] = loads(str(created_user_info).replace("'", "\""))
-
-            # Change initial program run to True such that the user creation,
-            # Does not run again.
-            initial_program_run: (str | Dict[str, str] | None) = user_data_dict["InitialProgramRun"]
 
             # Get the user name.
             user_name: str =  user_data_dict["Username"]
