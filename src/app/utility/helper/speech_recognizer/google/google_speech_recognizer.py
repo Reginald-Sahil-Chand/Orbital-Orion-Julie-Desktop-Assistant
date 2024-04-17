@@ -40,7 +40,6 @@ from typing import Any
 # Include external packages and modules.
 from speech_recognition import UnknownValueError, RequestError # type: ignore
 
-
 def google_speech_recognizer(recognizer: Any, audio: Any,
         text_to_speech_handler: Any, **kwargs: str) -> str:
     """Recognizes speech using Google Speech Recognition.
@@ -76,9 +75,11 @@ def google_speech_recognizer(recognizer: Any, audio: Any,
     request_error_message_for_google_speech_recognition: str = kwargs.get(
         "request_error_message_for_google_speech_recognition", "")
 
+    voice_input: str = "(Google Speech Recognition was not able to understand the speech)\n"
+
     try:
         # Recognize speech using Google Speech Recognition.
-        voice_input: Any = recognizer.recognize_google(audio) # type: ignore
+        voice_input = recognizer.recognize_google(audio) # type: ignore
 
         print(f"{voice_input_recognized_message, voice_input}\n")
         text_to_speech_handler.create_text_to_speech_announcer(
@@ -96,4 +97,4 @@ def google_speech_recognizer(recognizer: Any, audio: Any,
             text_to_produce_speech=(
                 request_error_message_for_google_speech_recognition))
 
-    return voice_input  # type: ignore
+    return voice_input
