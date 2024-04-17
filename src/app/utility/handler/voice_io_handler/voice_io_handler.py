@@ -46,6 +46,7 @@ from src.app.utility.handler.text_to_speech_handler.text_to_speech_handler\
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_voice_io_handler\
     .abstract_voice_io_handler import AbstractVoiceIoHandler
 
+
 @dataclass
 class VoiceIoHandler(AbstractVoiceIoHandler):
     """Class to get voice inputs, and perform tasks based on the given input."""
@@ -88,6 +89,11 @@ class VoiceIoHandler(AbstractVoiceIoHandler):
             "Could you please try again?\n")
 
         try:
+            if speech_recognizer not in self._supported_speech_recognizer:
+                raise TypeError(
+                    f"Alert: The type {speech_recognizer} is not supported.\n"
+                    f"Supported types are {self._supported_speech_recognizer_types}")
+
             print(noise_adjustment_message)
             self._text_to_speech_handler.create_text_to_speech_announcer(
                 text_to_produce_speech=noise_adjustment_message)
