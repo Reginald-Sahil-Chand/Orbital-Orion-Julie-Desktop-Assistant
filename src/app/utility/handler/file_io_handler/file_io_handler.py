@@ -33,12 +33,15 @@ Refer to the module documentation for details.
 from dataclasses import dataclass, field
 from os import path
 
+# Include internal typings.
+from typing import Any, Dict, Tuple
+
 # Include custom packages and modules.
 from src.app.design_pattern.adapter.abstract.blueprint.abstract_file_io_handler\
     .abstract_file_io_handler import AbstractFileIoHandler
 from src.app.utility.handler.log_handler.log_handler import LogHandler
 from src.app.utility.handler.directory_io_handler.directory_io_handler import DirectoryIoHandler
-from src.app.utility.helpers.validation.custom_value_and_type_validation\
+from src.app.utility.helper.validation.custom_value_and_type_validation\
     .custom_value_and_type_validation import validate_if_value_is_empty,\
         validate_if_type_does_not_match, validate_file_contents
 
@@ -60,7 +63,7 @@ class FileIoHandler(AbstractFileIoHandler):
     directory_io_handler: DirectoryIoHandler = field(default_factory=DirectoryIoHandler)
 
     # Stores file contents.
-    returned_file_contents = {}
+    returned_file_contents: (str | Dict[Any, Any] | None) = field(default_factory=lambda: {})
 
     def create_file_operation(self,
                               file_contents: (str | dict[str, str]),
@@ -107,7 +110,7 @@ class FileIoHandler(AbstractFileIoHandler):
         """
 
         # Define file data for file type and file mode checking.
-        _file_data = {
+        _file_data: Dict[str, dict[str, str]] = {
             "file_types": {
                 "text": "text",
                 "json": "json",
@@ -122,14 +125,14 @@ class FileIoHandler(AbstractFileIoHandler):
         }
 
         # Define default values for the used keyword arguments.
-        directory_name_or_name_with_path = kwargs.get("directory_path", "")
-        file_type = kwargs.get("file_type", "")
-        file_name = kwargs.get("file_name", "")
-        file_mode = kwargs.get("file_mode", "")
+        directory_name_or_name_with_path: str = kwargs.get("directory_path", "")
+        file_type: str = kwargs.get("file_type", "")
+        file_name: str = kwargs.get("file_name", "")
+        file_mode: str = kwargs.get("file_mode", "")
 
         # Error handling.
-        _file_types = list(key for key in _file_data["file_types"])
-        _file_modes = list(key for key in _file_data["file_modes"].values())
+        _file_types: Tuple[str, ...] = tuple(key for key in _file_data["file_types"])
+        _file_modes: Tuple[str, ...] = tuple(key for key in _file_data["file_modes"].values())
         _min_file_contents_length = 1
 
         if file_type == _file_data["file_types"]["csv"]:
@@ -138,14 +141,18 @@ class FileIoHandler(AbstractFileIoHandler):
 
         # Invoke custom value and type validation functions.
         # * Refer to utility/helpers/validation folder(s) to learn more.
-        validate_if_value_is_empty(value=directory_name_or_name_with_path)
+        validate_if_value_is_empty(
+            value=directory_name_or_name_with_path,
+            value_name_to_be_validated_on="directory")
         validate_if_type_does_not_match(given_type=file_type, supported_types=_file_types)
-        validate_if_value_is_empty(value=file_name)
+        validate_if_value_is_empty(
+            value=file_name,
+            value_name_to_be_validated_on="file name")
         validate_if_type_does_not_match(given_type=file_mode, supported_types=_file_modes)
         validate_file_contents(file_contents=file_contents,
                                min_file_contents_length=_min_file_contents_length)
 
-        _file_name_with_path = path.join(directory_name_or_name_with_path, file_name)
+        _file_name_with_path: str = path.join(directory_name_or_name_with_path, file_name)
 
         try:
             self.directory_io_handler.create_directory(
