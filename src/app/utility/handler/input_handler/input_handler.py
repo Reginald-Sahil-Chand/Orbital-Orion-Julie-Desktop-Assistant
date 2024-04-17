@@ -33,7 +33,7 @@ Refer to the module documentation for details.
 from dataclasses import dataclass, field
 
 # Include built-in types.
-from typing import Dict
+from typing import Dict, Tuple
 
 # Include custom packages and modules.
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_input_handler\
@@ -46,7 +46,7 @@ class InputHandler(AbstractInputHandler):
     """A input class inheriting AbstractInputHandler abstract class for handling user inputs."""
 
     # Instantiate LogHandler.
-    _log_handler:LogHandler = field(default_factory=LogHandler)
+    _log_handler: LogHandler = field(default_factory=LogHandler)
 
     _available_input_types: Dict[str, type] = field(default_factory=lambda: {
         "str": str,
@@ -55,7 +55,7 @@ class InputHandler(AbstractInputHandler):
         "bool": bool
     })
 
-    _store_available_input_types: tuple[str, ...] = ()
+    _store_available_input_types: Tuple[str, ...] = ()
 
     # You can also import and use the Union type. (Both does the same thing).
     _store_input_value: (str | int | float | bool) = ""
@@ -70,7 +70,7 @@ class InputHandler(AbstractInputHandler):
     # * We need to use __post_init__ to inform filed that the class is now initialized,
     # * Hence return the values.
     def __post_init__(self):
-        self._store_available_input_types: tuple[str, ...] = (
+        self._store_available_input_types: Tuple[str, ...] = (
             tuple(self._available_input_types.keys()))
 
         self._input_type_mismatch_error_message = (
