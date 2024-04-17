@@ -44,14 +44,14 @@ from src.app.utility.helper.speech_recognizer.google import google_speech_recogn
 class AbstractVoiceIoHandler(ABC):
     """Abstract class to handle speech recognizer's."""
 
-    _supported_voice_recognizer: Dict[str, Callable[..., (str | Any)]] =  field(
+    _supported_speech_recognizer: Dict[str, Callable[..., (str | Any)]] =  field(
         default_factory=lambda: {
         "google_voice_recognizer": google_speech_recognizer.google_speech_recognizer,
     })
 
     def __post_init__(self):
-        self._supported_voice_recognizer_types: List[str] = (
-            list(k for k in self._supported_voice_recognizer))
+        self._supported_speech_recognizer_types: List[str] = (
+            list(k for k in self._supported_speech_recognizer))
 
     @abstractmethod
     def get_voice_input(self, speech_recognizer: str) -> None:
@@ -89,19 +89,19 @@ class AbstractVoiceIoHandler(ABC):
         Note:
             - This method checks if the specified speech recognizer is supported.
             - If supported, it calls the corresponding function from
-            _supported_voice_recognizer to create the voice recognizer and perform
+            _supported_speech_recognizer to create the voice recognizer and perform
             speech recognition.
             - Customization of recognition announcement messages can be done through keyword
             arguments in **kwargs.
         """
 
-        if speech_recognizer not in self._supported_voice_recognizer:
+        if speech_recognizer not in self._supported_speech_recognizer:
             raise TypeError(
                 f"Alert: The type {speech_recognizer} is not supported.\n"
-                f"Supported types are {self._supported_voice_recognizer_types}")
+                f"Supported types are {self._supported_speech_recognizer_types}")
 
-        if speech_recognizer in self._supported_voice_recognizer:
-            func_speech_recognizer = self._supported_voice_recognizer[speech_recognizer]
+        if speech_recognizer in self._supported_speech_recognizer:
+            func_speech_recognizer = self._supported_speech_recognizer[speech_recognizer]
             voice_input_value: str = func_speech_recognizer(
                 recognizer=recognizer, audio=audio,
                 text_to_speech_handler=text_to_speech_handler, **kwargs)
