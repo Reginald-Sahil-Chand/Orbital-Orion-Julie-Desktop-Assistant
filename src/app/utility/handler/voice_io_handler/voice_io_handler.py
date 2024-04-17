@@ -37,6 +37,9 @@ Refer to the module documentation for details.
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
 
+# Include internal typings.
+from typing import Dict, Tuple
+
 # Include external packages and modules.
 from speech_recognition import Recognizer, Microphone # type: ignore
 
@@ -45,6 +48,8 @@ from src.app.utility.handler.text_to_speech_handler.text_to_speech_handler\
     import TextToSpeechHandler
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_voice_io_handler\
     .abstract_voice_io_handler import AbstractVoiceIoHandler
+from src.app.utility.handler.artificial_intelligence_handler\
+    .gemini_handler.gemini_handler import GeminiHandler
 
 
 @dataclass
@@ -54,12 +59,57 @@ class VoiceIoHandler(AbstractVoiceIoHandler):
     # Instantiate TextToSpeechHandler.
     _text_to_speech_handler: TextToSpeechHandler = field(default_factory=TextToSpeechHandler)
 
+    # Instantiate GeminiHandler.
+    _gemini_handler: GeminiHandler = field(default_factory=GeminiHandler)
+
     # Instantiate Recognizer and Microphone.
     _recognizer: Recognizer = Recognizer()
     _microphone: Microphone = Microphone()
 
+    # Define announcement messages.
+    announcement_message: Dict[str, str] = field(default_factory=lambda: {
+        "noise_adjustment_message": (
+            "A moment of silence please. Doing adjustments for ambient noise."),
+        "how_may_i_help_you_message": "How may I help you?\n",
+        "recognizing_voice_input_message": "Got it! Please wait. Recognizing voice input.",
+        "voice_input_recognized_message": "You said",
+        "could_not_recognize_voice_input_message": (
+            "Oops! I apologize because, I couldn't understand what you said. "
+            "Could you please try again?\n")
+    })
+
     # Stores the user's current speech at runtime.
     _voice_input_value: (str | None) = ""
+
+    def _set_speech_recognizer(self, speech_recognizer: str) -> None:
+        """Initiates voice recognition process.
+
+        Args:
+            - speech_recognizer (str): The type of speech recognizer to use.
+
+        Returns: None
+        """
+
+        print(self.announcement_message["how_may_i_help_you_message"])
+        self._text_to_speech_handler.create_text_to_speech_announcer(
+            text_to_produce_speech=self.announcement_message["how_may_i_help_you_message"])
+
+        with self._microphone as source:
+            audio = self._recognizer.listen(source) # type: ignore
+
+        print(self.announcement_message["recognizing_voice_input_message"])
+        self._text_to_speech_handler.create_text_to_speech_announcer(
+            text_to_produce_speech=self.announcement_message["recognizing_voice_input_message"])
+
+        self._voice_input_value = self.create_voice_recognizer(
+            speech_recognizer=speech_recognizer,
+            recognizer=self._recognizer,
+            audio=audio,
+            text_to_speech_handler=self._text_to_speech_handler,
+            voice_input_recognized_message=(
+                self.announcement_message["voice_input_recognized_message"]),
+            could_not_recognize_voice_input_message=(
+                self.announcement_message["could_not_recognize_voice_input_message"]))
 
     def get_voice_input(self, speech_recognizer: str) -> None:
         """Method that initiates the create_voice_recognizer method.
@@ -76,17 +126,8 @@ class VoiceIoHandler(AbstractVoiceIoHandler):
         Returns: None
         """
 
-        # Define announcement messages.
-        noise_adjustment_message: str = (
-            "A moment of silence please. Doing adjustments for ambient noise.")
-
-        how_may_i_help_you_message: str = "How may I help you?\n"
-        recognizing_voice_input_message: str = "Got it! Please wait. Recognizing voice input."
-        voice_input_recognized_message: str = "You said"
-
-        could_not_recognize_voice_input_message: str = (
-            "Oops! I apologize because, I couldn't understand what you said. "
-            "Could you please try again?\n")
+        # Define AI wake words.
+        ai_wake_words: Tuple[str, ...] = ("use ai", "use gemini", "use artificial intelligence")
 
         try:
             if speech_recognizer not in self._supported_speech_recognizer:
@@ -94,36 +135,37 @@ class VoiceIoHandler(AbstractVoiceIoHandler):
                     f"Alert: The type {speech_recognizer} is not supported.\n"
                     f"Supported types are {self._supported_speech_recognizer_types}")
 
-            print(noise_adjustment_message)
+            print(self.announcement_message["noise_adjustment_message"])
             self._text_to_speech_handler.create_text_to_speech_announcer(
-                text_to_produce_speech=noise_adjustment_message)
+                text_to_produce_speech=self.announcement_message["noise_adjustment_message"])
 
             with self._microphone as source:
                 self._recognizer.adjust_for_ambient_noise(source) # type: ignore
 
             while True:
-                print(how_may_i_help_you_message)
-                self._text_to_speech_handler.create_text_to_speech_announcer(
-                    text_to_produce_speech=how_may_i_help_you_message)
+                self._set_speech_recognizer(speech_recognizer=speech_recognizer)
 
-                with self._microphone as source:
-                    audio = self._recognizer.listen(source) # type: ignore
-
-                print(recognizing_voice_input_message)
-                self._text_to_speech_handler.create_text_to_speech_announcer(
-                    text_to_produce_speech=recognizing_voice_input_message)
-
-                self._voice_input_value = self.create_voice_recognizer(
-                    speech_recognizer=speech_recognizer,
-                    recognizer=self._recognizer,
-                    audio=audio,
-                    text_to_speech_handler=self._text_to_speech_handler,
-                    voice_input_recognized_message=voice_input_recognized_message,
-                    could_not_recognize_voice_input_message=could_not_recognize_voice_input_message)
-
-                # Print returned value.
                 if isinstance(self._voice_input_value, str):
-                    print(self._voice_input_value.lower())
+                    if self._voice_input_value.lower() in ai_wake_words:
+                        print("USING AI \"GEMINI PRO.\"\n")
+                        self._text_to_speech_handler.create_text_to_speech_announcer(
+                            text_to_produce_speech="Using AI, Gemini Pro.")
+
+                        self._set_speech_recognizer(speech_recognizer=speech_recognizer)
+
+                        print("Generating Content. Please Wait. It might take some time.\n")
+                        self._text_to_speech_handler.create_text_to_speech_announcer(
+                            text_to_produce_speech=(
+                                "Generating Content. Please Wait. It might take some time."))
+
+                        user_requested_prompt: str = self._gemini_handler.initiate_gemini_ai(
+                            prompt=str(self._voice_input_value))
+
+                        print(f"{user_requested_prompt}\n")
+                        remove_asterisk_from_prompt = user_requested_prompt.replace("*", "")
+
+                        self._text_to_speech_handler.create_text_to_speech_announcer(
+                            text_to_produce_speech=remove_asterisk_from_prompt)
 
         except KeyboardInterrupt:
             print("Dear user, you have entered \"ctrl+c\", hence the program has been terminated.")
