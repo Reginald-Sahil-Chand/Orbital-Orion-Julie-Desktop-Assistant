@@ -80,10 +80,8 @@ class OojdaControlPanel:
         user_information: UserInformation = UserInformation()
         user_information.create_user_information()
 
-        # Assign a variable to voice_io_handler.get_voice_input() to retrieve the returned,
-        # Voice input value. (What you said is what you will get returned most of the time.)
         voice_io_handler: VoiceIoHandler = VoiceIoHandler()
-        voice_io_handler.get_voice_input()
+        voice_io_handler.get_voice_input(speech_recognizer="google_voice_recognizer")
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
