@@ -34,7 +34,7 @@ from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 
 # Include internal typings.
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, List
 
 # Include custom packages and modules.
 from src.app.utility.helper.speech_recognizer.google import google_speech_recognizer
@@ -48,6 +48,10 @@ class AbstractVoiceIoHandler(ABC):
         default_factory=lambda: {
         "google_voice_recognizer": google_speech_recognizer.google_speech_recognizer,
     })
+
+    def __post_init__(self):
+        self._supported_voice_recognizer_types: List[str] = (
+            list(k for k in self._supported_voice_recognizer))
 
     @abstractmethod
     def get_voice_input(self, speech_recognizer: str) -> None:
@@ -90,6 +94,11 @@ class AbstractVoiceIoHandler(ABC):
             - Customization of recognition announcement messages can be done through keyword
             arguments in **kwargs.
         """
+
+        if speech_recognizer not in self._supported_voice_recognizer:
+            raise TypeError(
+                f"Alert: The type {speech_recognizer} is not supported.\n"
+                f"Supported types are {self._supported_voice_recognizer_types}")
 
         if speech_recognizer in self._supported_voice_recognizer:
             func_speech_recognizer = self._supported_voice_recognizer[speech_recognizer]
