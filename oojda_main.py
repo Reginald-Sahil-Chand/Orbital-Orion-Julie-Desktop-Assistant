@@ -43,8 +43,8 @@ Refer to the module documentation for details.
 """
 
 # Include custom packages and modules.
-from src.app.shuttle.oojda_control_panel.oojda_control_panel import OojdaControlPanel
-from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.home._class.oojda_control_panel.oojda_control_panel import OojdaControlPanel
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 
 # Include Metadata.
 __author__ = "Reginald Sahil Chand"
