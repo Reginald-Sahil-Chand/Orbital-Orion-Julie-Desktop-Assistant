@@ -7,7 +7,7 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 abstract_log_handler.py:
 ========================
-Acts as a blueprint for the log_handler utility class.
+Acts as a blueprint for the log_handler class.
 
 Guidelines:
 ===========
@@ -36,7 +36,7 @@ from dataclasses import dataclass
 
 @dataclass
 class AbstractLogHandler(ABC):
-    """An abstract base class for handling logging utility functions."""
+    """An abstract base class for handling logs."""
 
     @abstractmethod
     def create_log(self, log_type: str, log_message: str = "Log message is undefined.") -> None:
@@ -48,5 +48,6 @@ class AbstractLogHandler(ABC):
         - log_message: (str) -> The message required to tell more about the log.
         - Default Log Message: Log message is undefined.
         
-        Returns: None
+        Returns:
+            - None.
         """
