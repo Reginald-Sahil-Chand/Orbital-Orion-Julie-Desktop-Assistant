@@ -49,7 +49,7 @@ def open_application(query: str, text_to_speech_handler: Any) -> None:
         - text_to_speech_handler (Any): The text-to-speech handler for generating speech output.
 
     Returns:
-        - None
+        - None.
 
     Raises:
         - Exception: If an error occurs during the application opening process.
