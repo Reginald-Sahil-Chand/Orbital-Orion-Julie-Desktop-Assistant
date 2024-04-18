@@ -36,7 +36,7 @@ from dataclasses import dataclass
 
 @dataclass
 class AbstractInputHandler(ABC):
-    """An abstract base class for handling input utility functions."""
+    """An abstract base class for handling user input."""
 
     @abstractmethod
     def create_input(self, input_type: str,
