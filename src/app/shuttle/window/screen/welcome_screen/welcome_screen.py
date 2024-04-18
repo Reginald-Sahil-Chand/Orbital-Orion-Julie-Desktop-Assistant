@@ -41,7 +41,8 @@ class WelcomeScreen:
     def create_welcome_screen() -> None:
         """Creates a welcome screen and display the welcome message.
         
-        Returns None
+        Returns:
+            - None.
         """
 
         _welcome_message: str = r"""
