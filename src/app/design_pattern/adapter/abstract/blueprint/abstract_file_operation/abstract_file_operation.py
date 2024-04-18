@@ -40,7 +40,7 @@ from typing import IO, Any, Dict
 from json import JSONDecodeError, load, dumps
 
 # Include custom packages and modules.
-from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 
 
 @dataclass
