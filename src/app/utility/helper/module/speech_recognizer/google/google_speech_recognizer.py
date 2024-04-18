@@ -7,7 +7,7 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 google_speech_recognizer.py:
 ============================
-This file contains a method that recognizes speech using Google Speech Recognition.
+This file contains a function that recognizes speech using Google Speech Recognition.
 
 Guidelines:
 ===========
@@ -29,22 +29,14 @@ Some modules may have dependencies on external libraries.
 Refer to the module documentation for details.
 """
 
-# * NOTE: "# type: ignore" has been used at some places because, some packages,
-# * Does not have a specific stub file hence pylint / pylance are unable to infer types.
-# * Thus to avoid unnecessary errors and warnings, making the code base noisy, I decided to,
-# * Ignore types for some parts of the code.
-
-# Include built-in types.
-import sys
-
 # Include internal typings.
 from typing import Any
 
 # Include external packages and modules.
-from speech_recognition import UnknownValueError, RequestError # type: ignore
+from speech_recognition import AudioData, UnknownValueError, RequestError # type: ignore
 
-def google_speech_recognizer(recognizer: Any, audio: Any,
-        text_to_speech_handler: Any, **kwargs: str) -> str:
+
+def google_speech_recognizer(recognizer: Any, audio: AudioData, text_to_speech_handler: Any) -> str:
     """Recognizes speech using Google Speech Recognition.
 
     Args:
@@ -52,54 +44,39 @@ def google_speech_recognizer(recognizer: Any, audio: Any,
         - audio (Any): The audio input to be recognized.
         - text_to_speech_handler (Any): The handler for converting text to speech.
 
-    Kwargs (str): Keyword arguments for customization:
-        - voice_input_recognized_message (str): Custom message when voice input is recognized.
-        - could_not_recognize_voice_input_message (str):
-        Custom message when voice input cannot be recognized.
-        - request_error_message_for_google_speech_recognition (str):
-        Custom message for Google Speech Recognition request errors.
-
     Returns:
-        str: The recognized voice input as a string.
+        - str: The recognized voice input as a string.
+
+    Raises:
+        - Exception: if query is empty or not understood.
+        - Exception: if the user is offline.
 
     Note:
         - The function uses the `recognizer` object to recognize speech from the `audio` input.
         - Audio input comes from the `SpeechRecognition` library.
-        - Customization of messages can be done through keyword arguments in **kwargs.
     """
 
-    # Define announcement messages.
-    voice_input_recognized_message: str = kwargs.get(
-        "voice_input_recognized_message", "")
+    _unknown_value_error_message: str = (
+        "Sorry, I didn't catch that. Could you please rephrase or clarify your question?\n")
 
-    could_not_recognize_voice_input_message: str = kwargs.get(
-        "could_not_recognize_voice_input_message", "")
+    _request_error_message: str = (
+        "Oops! It seems there's an issue with your connection.\n"
+        "Please check your internet settings and try again for voice "
+        "recognition to work smoothly.\n")
 
-    request_error_message_for_google_speech_recognition: str = (
-        "\nDear user! you will not be able to use google speech recognition as you are offline.\n"
-        "Please turn on your internet to access Google's speech recognition.")
-
-    voice_input: str = "(Google Speech Recognition was not able to understand the speech)\n"
+    _query: str = ""
 
     try:
-        # Recognize speech using Google Speech Recognition.
-        voice_input = recognizer.recognize_google(audio) # type: ignore
-
-        print(f"{voice_input_recognized_message, voice_input}\n")
-        text_to_speech_handler.create_text_to_speech_announcer(
-            text_to_produce_speech=(
-                f"{voice_input_recognized_message, voice_input}"))
+        _query = recognizer.recognize_google(audio)
 
     except UnknownValueError:
-        print(could_not_recognize_voice_input_message)
+        print(_unknown_value_error_message)
         text_to_speech_handler.create_text_to_speech_announcer(
-            text_to_produce_speech=could_not_recognize_voice_input_message)
+            text_to_produce_speech=_unknown_value_error_message)
 
     except RequestError:
-        print(request_error_message_for_google_speech_recognition)
+        print(_request_error_message)
         text_to_speech_handler.create_text_to_speech_announcer(
-            text_to_produce_speech=(
-                request_error_message_for_google_speech_recognition))
-        sys.exit()
+            text_to_produce_speech=_request_error_message)
 
-    return voice_input
+    return _query
