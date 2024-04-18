@@ -135,7 +135,7 @@ class UserInformation:
                 log_type="info",
                 log_message=f"User {user_name} has been successfully created.")
 
-            print(f"Welcome {user_name}\n")
+            print(f"\nWelcome {user_name}\n")
 
             user_name_words: List[str] = user_name.split()
 
