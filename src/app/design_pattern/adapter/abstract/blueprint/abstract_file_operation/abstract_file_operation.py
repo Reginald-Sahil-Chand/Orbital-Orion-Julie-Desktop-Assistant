@@ -5,9 +5,9 @@ This software is based on a space theme.
 All the functions, variables, and class names used are meaningful and follows a space theme.
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
-abstract_file_io_handler.py:
-============================
-Acts as a blueprint for the file_handler utility class.
+abstract_file_operation.py:
+===========================
+Acts as a blueprint for the file_operation utility class.
 
 Guidelines:
 ===========
@@ -30,9 +30,13 @@ Refer to the module documentation for details.
 """
 
 # Include built-in packages and modules.
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import IO, Any
+from abc import ABC, abstractmethod
+
+# Include internal typings.
+from typing import IO, Any, Dict
+
+# Include external packages and modules.
 from json import JSONDecodeError, load, dumps
 
 # Include custom packages and modules.
@@ -40,21 +44,11 @@ from src.app.utility.handler.log_handler.log_handler import LogHandler
 
 
 @dataclass
-class AbstractFileIoHandler(ABC):
+class AbstractFileOperation(ABC):
     """An abstract base class for handling file operations."""
 
     # Instantiate LogHandler.
     _log_handler:LogHandler = field(default_factory=LogHandler)
-
-    # Define file types.
-    _file_type_text: str = "text"
-    _file_type_json: str = "json"
-    _file_type_csv: str = "csv"
-
-    # Define file modes.
-    _file_mode_read: str = "r"
-    _file_mode_write: str = "w"
-    _file_mode_append: str = "a"
 
     @abstractmethod
     def create_file_operation(self,
@@ -68,7 +62,7 @@ class AbstractFileIoHandler(ABC):
             - File Operation [3]: Append file.
 
         Args:
-            - self (Self@AbstractFileIoHandler): Refers to the base class.
+            - self: Creates instance of the class.
             - file_contents (str): File contents refer to the content of the file.
                     - Here content means when you are creating a file, reading or writing a file,
                     what does the file contain, this can be a list of items, block of text or,
@@ -124,7 +118,7 @@ class AbstractFileIoHandler(ABC):
             - File Operation [3]: File contents (get the file data).
 
         Args:
-            - self (Self@AbstractFileIoHandler): Refers to the base class.
+            - self: Creates instance of the class.
             - file_mode (str): File mode refers to the mode for the file operation.
                 - There are three file modes currently supported:
                     - File Mode [1]: "r" => read file.
@@ -148,49 +142,77 @@ class AbstractFileIoHandler(ABC):
             when creating it.
         """
 
+        file_information: Dict[str, Dict[str, str]] = {
+            "file_modes": {
+                "read":"r",
+                "write":"w",
+                "append":"a"
+            },
+
+            "file_types": {
+                "text":"text",
+                "json":"json"
+            }
+        }
+
         try:
-            match file_mode:
-                case self._file_mode_read:
-                    if file_type == self._file_type_text:
-                        file_contents = file.read()
-                        return file_contents
+            if (file_mode in file_information["file_modes"]
+                and file_type in file_information["file_types"]
+                ):
+                if (
+                    file_information["file_modes"]["read"]
+                    and file_information["file_types"]["text"]):
+                    file_contents = file.read()
+                    return file_contents
 
-                    if file_type == self._file_type_json:
-                        file_contents = load(file)
-                        return file_contents
+                if (
+                    file_information["file_modes"]["read"]
+                    and file_information["file_types"]["json"]):
+                    file_contents = load(file)
+                    return file_contents
 
-                case self._file_mode_write:
-                    if file_type == self._file_type_text:
-                        file.writelines(file_contents)
+                if (file_information["file_modes"]["write"]
+                    or file_information["file_modes"]["append"]
+                    and file_information["file_types"]["text"]):
+                    file.writelines(file_contents)
 
-                    if file_type == self._file_type_json:
-                        json_object = dumps(file_contents, indent=4)
-                        file.writelines(json_object)
-
-                case self._file_mode_append:
-                    if file_type == self._file_type_text:
-                        file.writelines(file_contents)
-
-                    if file_type == self._file_type_json:
-                        json_object = dumps(file_contents, indent=4)
-                        file.writelines(json_object)
-
-                case _:
-                    return None
+                if (file_information["file_modes"]["write"]
+                    or file_information["file_modes"]["append"]
+                    and file_information["file_types"]["json"]):
+                    json_object = dumps(file_contents, indent=4)
+                    file.writelines(json_object)
+            else:
+                raise TypeError(
+                    f"Given type {file_mode or file_type} "
+                    f"does not match the required type: "
+                    f"{file_information['file_modes'] or file_information['file_types']}")
 
         except FileNotFoundError as err:
             self._log_handler.create_log(
                 log_type="error",
                 log_message=f"File not found. Possible missing directory. {err}")
 
-            return None
+        except PermissionError as err:
+            self._log_handler.create_log(
+                log_type="error",
+                log_message=f"File cannot be created. Permission denied. {err}")
 
         except JSONDecodeError as err:
             self._log_handler.create_log(
                 log_type="error",
                 log_message=f"Error reading json file object. {err}")
 
-            return None
+        except ValueError as err:
+            self._log_handler.create_log(
+                log_type="error",
+                log_message=f"{file_mode or file_type} cannot be empty. {err}")
+
+        except Exception as err:
+            self._log_handler.create_log(
+                log_type="error",
+                log_message=f"An unknown error occurred. {err}")
+
+        return None
 
     def adapter_creates_file(
             self,
@@ -200,7 +222,7 @@ class AbstractFileIoHandler(ABC):
         """Adapter method to create file based on the provided file type.
         
         Args:
-            - self (Self@AbstractFileIoHandler): Refers to the base class.
+            - self: Creates instance of the class.
             - file_type (str): There are three currently supported file types:
                 - File Type [1]: text.
                 - File Type [1]: json.
@@ -231,4 +253,6 @@ class AbstractFileIoHandler(ABC):
         # File creation.
         with open(file=file_name, mode=file_mode, encoding="UTF-8") as file:
             return self._file_operator(file_type=file_type,
-                                       file_mode=file_mode, file=file, file_contents=file_contents)
+                                       file_mode=file_mode,
+                                       file=file,
+                                       file_contents=file_contents)
