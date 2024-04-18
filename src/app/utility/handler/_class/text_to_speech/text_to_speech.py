@@ -40,7 +40,7 @@ from typing import Any
 import pyttsx3 # type: ignore
 
 # Include custom packages and modules.
-from src.app.utility.handler.log_handler.log_handler import LogHandler # type: ignore
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 
 # * DISABLE THE LOGS.
 # ! ALERT: ONLY DISABLE THE LOGS IN PRODUCTION. DO NOT DISABLE ELSE, OTHERWISE,

@@ -35,7 +35,7 @@ from dataclasses import dataclass, field
 from os import makedirs
 
 # Include custom packages and modules.
-from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 
 
 # Define custom directory exception.

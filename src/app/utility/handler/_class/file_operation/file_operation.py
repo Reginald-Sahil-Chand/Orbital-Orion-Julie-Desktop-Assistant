@@ -40,7 +40,7 @@ from typing import Any, Dict, Tuple
 # Include custom packages and modules.
 from src.app.design_pattern.adapter.abstract.blueprint\
     .abstract_file_operation.abstract_file_operation import AbstractFileOperation
-from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 from src.app.utility.handler._class.directory_operation.directory_operation\
     import DirectoryOperation
 from src.app.utility.helper._module.validation.custom_value_and_type_validation\

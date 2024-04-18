@@ -38,7 +38,7 @@ from typing import Dict, Tuple
 # Include custom packages and modules.
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_input_handler\
     .abstract_input_handler import AbstractInputHandler
-from src.app.utility.handler.log_handler.log_handler import LogHandler
+from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 
 
 @dataclass
