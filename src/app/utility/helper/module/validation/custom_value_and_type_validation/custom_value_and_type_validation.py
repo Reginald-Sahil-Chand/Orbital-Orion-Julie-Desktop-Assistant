@@ -38,10 +38,13 @@ def validate_if_value_is_empty(value: str, value_name_to_be_validated_on: str) -
     """Validates if a given value is empty (contains only whitespace characters).
 
     Args:
-        value (str): The value to be validated.
+        - value (str): The value to be validated.
+
+    Returns:
+        - None.
 
     Raises:
-        ValueError: If the value is empty.
+        - ValueError: If the value is empty.
     """
 
     if not value.strip():
@@ -51,11 +54,14 @@ def validate_if_type_does_not_match(given_type: str, supported_types: Tuple[str,
     """Validates if a given type matches the expected types.
 
     Args:
-        given_type (str): The type to be validated.
-        supported_types (list[str]): List of supported types.
+        - given_type (str): The type to be validated.
+        - supported_types (list[str]): List of supported types.
+
+    Returns:
+        - None.
 
     Raises:
-        TypeError: If the given type does not match the expected types.
+        - TypeError: If the given type does not match the expected types.
     """
 
     if given_type not in supported_types:
@@ -67,12 +73,15 @@ def validate_file_contents(file_contents: str | (str | Dict[str, str]),
     """Validates file contents based on their type and length.
 
     Args:
-        file_contents (str | dict[str, str]): The file contents to be validated.
-        min_file_contents_length (int): Minimum allowed length for file contents.
+        - file_contents (str | dict[str, str]): The file contents to be validated.
+        - min_file_contents_length (int): Minimum allowed length for file contents.
+
+    Returns:
+        - None.
 
     Raises:
-        ValueError: If the file contents are empty or do not meet the minimum length requirement.
-        KeyError: If a key in the file contents dictionary is empty.
+        - ValueError: If the file contents are empty or do not meet the minimum length requirement.
+        - KeyError: If a key in the file contents dictionary is empty.
     """
 
     if isinstance(file_contents, str) and not file_contents.strip():
@@ -84,7 +93,7 @@ def validate_file_contents(file_contents: str | (str | Dict[str, str]),
 
         for key, value in file_contents.items():
             if not key.strip():
-                raise ValueError("Please note that key cannot be empty.")
+                raise ValueError("Please note that the key cannot be empty.")
 
             if not value.strip():
                 raise ValueError("Please note that the value cannot be empty.")
