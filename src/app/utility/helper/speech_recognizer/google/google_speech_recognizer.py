@@ -34,6 +34,9 @@ Refer to the module documentation for details.
 # * Thus to avoid unnecessary errors and warnings, making the code base noisy, I decided to,
 # * Ignore types for some parts of the code.
 
+# Include built-in types.
+import sys
+
 # Include internal typings.
 from typing import Any
 
@@ -72,8 +75,9 @@ def google_speech_recognizer(recognizer: Any, audio: Any,
     could_not_recognize_voice_input_message: str = kwargs.get(
         "could_not_recognize_voice_input_message", "")
 
-    request_error_message_for_google_speech_recognition: str = kwargs.get(
-        "request_error_message_for_google_speech_recognition", "")
+    request_error_message_for_google_speech_recognition: str = (
+        "\nDear user! you will not be able to use google speech recognition as you are offline.\n"
+        "Please turn on your internet to access Google's speech recognition.")
 
     voice_input: str = "(Google Speech Recognition was not able to understand the speech)\n"
 
@@ -91,10 +95,11 @@ def google_speech_recognizer(recognizer: Any, audio: Any,
         text_to_speech_handler.create_text_to_speech_announcer(
             text_to_produce_speech=could_not_recognize_voice_input_message)
 
-    except RequestError as err:
-        print(f"{request_error_message_for_google_speech_recognition, err}")
+    except RequestError:
+        print(request_error_message_for_google_speech_recognition)
         text_to_speech_handler.create_text_to_speech_announcer(
             text_to_produce_speech=(
                 request_error_message_for_google_speech_recognition))
+        sys.exit()
 
     return voice_input
