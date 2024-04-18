@@ -34,7 +34,7 @@ from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 
 # Include internal typings.
-from typing import IO, Any, Dict
+from typing import IO, Any
 
 # Include external packages and modules.
 from json import JSONDecodeError, load, dumps
@@ -49,6 +49,16 @@ class AbstractFileOperation(ABC):
 
     # Instantiate LogHandler.
     _log_handler:LogHandler = field(default_factory=LogHandler)
+
+    # Define file types.
+    _file_type_text: str = "text"
+    _file_type_json: str = "json"
+    _file_type_csv: str = "csv"
+
+    # Define file modes.
+    _file_mode_read: str = "r"
+    _file_mode_write: str = "w"
+    _file_mode_append: str = "a"
 
     @abstractmethod
     def create_file_operation(self,
@@ -142,50 +152,27 @@ class AbstractFileOperation(ABC):
             when creating it.
         """
 
-        file_information: Dict[str, Dict[str, str]] = {
-            "file_modes": {
-                "read":"r",
-                "write":"w",
-                "append":"a"
-            },
-
-            "file_types": {
-                "text":"text",
-                "json":"json"
-            }
-        }
-
         try:
-            if (file_mode in file_information["file_modes"]
-                and file_type in file_information["file_types"]
-                ):
-                if (
-                    file_information["file_modes"]["read"]
-                    and file_information["file_types"]["text"]):
-                    file_contents = file.read()
-                    return file_contents
+            match file_mode:
+                case self._file_mode_read:
+                    if file_type == self._file_type_text:
+                        file_contents = file.read()
+                        return file_contents
 
-                if (
-                    file_information["file_modes"]["read"]
-                    and file_information["file_types"]["json"]):
-                    file_contents = load(file)
-                    return file_contents
+                    if file_type == self._file_type_json:
+                        file_contents = load(file)
+                        return file_contents
 
-                if (file_information["file_modes"]["write"]
-                    or file_information["file_modes"]["append"]
-                    and file_information["file_types"]["text"]):
-                    file.writelines(file_contents)
+                case self._file_mode_write:
+                    if file_type in self._file_type_text or file_type in self._file_mode_append:
+                        file.writelines(file_contents)
 
-                if (file_information["file_modes"]["write"]
-                    or file_information["file_modes"]["append"]
-                    and file_information["file_types"]["json"]):
-                    json_object = dumps(file_contents, indent=4)
-                    file.writelines(json_object)
-            else:
-                raise TypeError(
-                    f"Given type {file_mode or file_type} "
-                    f"does not match the required type: "
-                    f"{file_information['file_modes'] or file_information['file_types']}")
+                    if file_type in self._file_type_json or file_type in self._file_type_json:
+                        json_object = dumps(file_contents, indent=4)
+                        file.writelines(json_object)
+
+                case _:
+                    return None
 
         except FileNotFoundError as err:
             self._log_handler.create_log(
