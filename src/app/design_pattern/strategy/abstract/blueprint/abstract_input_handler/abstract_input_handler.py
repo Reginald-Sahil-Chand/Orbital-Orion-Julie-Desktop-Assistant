@@ -6,7 +6,7 @@ All the functions, variables, and class names used are meaningful and follows a 
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
 abstract_input_handler.py:
-========================
+==========================
 Acts as a blueprint for the input_handler utility class.
 
 Guidelines:
