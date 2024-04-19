@@ -56,12 +56,12 @@ from src.app.utility.data._module.wake_words import wake_words_to_open_apps,\
 # * GLOBAL VARIABLES ! (USE WITH CARE)
 # Define announcement messages.
 _ANNOUNCEMENT_MESSAGE: Dict[str, str] = {
-    "online_message": "Julie is online.",
+    "online_message": "Julie is online.\n",
     "adjusting_noise": "Adjusting for ambient noise. Please wait.\n",
     "help_request": "How can I assist you today?\n",
     "processing_voice_input": "Searching for relevant results. Please wait!\n",
     "termination_message": """The program has been terminated using the Control + C shortcut.
-Thank you for using my service.\nWishing you a great day ahead!"""
+Thank you for using my service.\nWishing you a great day ahead!\n"""
     }
 
 # ! DANGER: DISABLE ALL @profile DECORATOR'S BEFORE PUSHING THE CODE INTO PRODUCTION.
@@ -189,7 +189,6 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
 
                 while True:
                     self._set_speech_recognizer(speech_recognizer=speech_recognizer)
-                    print(wake_words_to_open_apps["wake_with_open"])
                     if ((self._query == wake_words_to_open_apps["wake_with_open"])
                         or
                         (self._query == wake_words_to_open_apps["wake_with_go_to"])):
