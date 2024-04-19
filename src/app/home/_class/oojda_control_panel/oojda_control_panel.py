@@ -51,6 +51,7 @@ from dataclasses import dataclass
 # Include custom packages and modules.
 from src.app.home._class.screen.welcome_screen.welcome_screen import WelcomeScreen
 from src.app.home._class.user_information.user_information import UserInformation
+from src.app.home._class.start.sr_ware_house.sr_ware_house import SRWareHouse
 
 
 @dataclass
@@ -78,6 +79,10 @@ class OojdaControlPanel:
 
         user_information: UserInformation = UserInformation()
         user_information.create_user_information()
+
+        initiate_speech_recognition: SRWareHouse = SRWareHouse()
+        initiate_speech_recognition.initiate_speech_recognition(
+            speech_recognizer="google_speech_recognizer")
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
