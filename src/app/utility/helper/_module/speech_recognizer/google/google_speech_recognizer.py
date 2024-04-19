@@ -36,13 +36,17 @@ from typing import Any
 from speech_recognition import AudioData, UnknownValueError, RequestError # type: ignore
 
 
-def google_speech_recognizer(recognizer: Any, audio: AudioData, text_to_speech_handler: Any) -> str:
+def google_speech_recognizer(recognizer: Any,
+                             audio: AudioData,
+                             text_to_speech_handler: Any,
+                             should_announce_error_message: bool) -> str:
     """Recognizes speech using Google Speech Recognition.
 
     Args:
         - recognizer (Any): The recognizer object used for speech recognition.
         - audio (Any): The audio input to be recognized.
         - text_to_speech_handler (Any): The handler for converting text to speech.
+        - should_announce_error_message (str): To control the flow of error messages.
 
     Returns:
         - str: The recognized voice input as a string.
@@ -70,9 +74,10 @@ def google_speech_recognizer(recognizer: Any, audio: AudioData, text_to_speech_h
         _query = recognizer.recognize_google(audio)
 
     except UnknownValueError:
-        print(_unknown_value_error_message)
-        text_to_speech_handler.create_text_to_speech(
-            text_to_produce_speech=_unknown_value_error_message)
+        if should_announce_error_message:
+            print(_unknown_value_error_message)
+            text_to_speech_handler.create_text_to_speech(
+                text_to_produce_speech=_unknown_value_error_message)
 
     except RequestError:
         print(_request_error_message)
