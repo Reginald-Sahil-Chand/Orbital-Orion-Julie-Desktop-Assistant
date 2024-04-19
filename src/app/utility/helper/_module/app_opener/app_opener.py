@@ -62,7 +62,11 @@ def open_application(query: str, text_to_speech_handler: Any) -> None:
         f"{_queried_application_name} is not found in your device. Please try again!")
 
     try:
-        open_app(_queried_application_name, match_closest=True, throw_error=True)
+        # * open_app(_queried_application_name, match_closest=True, throw_error=True)
+        # I actually dont use this because sometimes it gives weird results.
+        # * Example: if the query = cloud -> Microsoft clock (if available in your device)
+        # * will be opened.
+        open_app(_queried_application_name, throw_error=True)
         text_to_speech_handler.create_text_to_speech(
                             text_to_produce_speech=f"{_queried_application_name} has been opened.")
 
