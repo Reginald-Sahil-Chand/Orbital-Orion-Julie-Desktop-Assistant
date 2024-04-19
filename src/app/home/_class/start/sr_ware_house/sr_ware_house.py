@@ -197,12 +197,12 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
                             or wake_words_to_open_apps["wake_with_go_to"]),
                             text_to_speech_handler=self._text_to_speech_handler)
 
-            elif self._voice_query.lower() in wake_words_to_self_describe:
-                # TODO: Update the message below, and handle the message in a separate variable.
-                self._text_to_speech_handler.create_text_to_speech(
-                    text_to_produce_speech=(
-                        "I'm Julie, a desktop assistant created by Reginald Chand."
-                        "He created me as a personal project."))
+                    if self._voice_query.lower() in wake_words_to_self_describe:
+                        # TODO: Update the message below, and handle the message in a separate variable.
+                        self._text_to_speech_handler.create_text_to_speech(
+                            text_to_produce_speech=(
+                                "I'm Julie, a desktop assistant created by Reginald Chand."
+                                "He created me as a personal project."))
 
             else:
                 # * USE ARTIFICIAL INTELLIGENCE (GOOGLE'S GEMINI).
