@@ -56,7 +56,7 @@ from src.app.utility.data._module.wake_words import wake_words_to_open_apps,\
 # * GLOBAL VARIABLES ! (USE WITH CARE)
 # Define announcement messages.
 _ANNOUNCEMENT_MESSAGE: Dict[str, str] = {
-    "online_message": "Julie is online.\n",
+    "online_message": "Julie is online. Say \"Hey Julie\"\n",
     "adjusting_noise": "Adjusting for ambient noise. Please wait.\n",
     "help_request": "How can I assist you today?\n",
     "processing_voice_input": "Searching for relevant results. Please wait!\n",
@@ -103,7 +103,6 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
         """
 
         try:
-            print(_ANNOUNCEMENT_MESSAGE["adjusting_noise"])
             self._text_to_speech_handler.create_text_to_speech(
                 text_to_produce_speech=_ANNOUNCEMENT_MESSAGE["adjusting_noise"])
 
@@ -142,14 +141,12 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
                 f"Alert: The type {speech_recognizer} is not supported.\n"
                 f"Supported types are {self._supported_speech_recognizer_types}")
 
-        print(_ANNOUNCEMENT_MESSAGE["help_request"])
         self._text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech=_ANNOUNCEMENT_MESSAGE["help_request"])
 
         with self._microphone as source:
             audio = self._recognizer.listen(source) # type: ignore
 
-        print(_ANNOUNCEMENT_MESSAGE["processing_voice_input"])
         self._text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech=_ANNOUNCEMENT_MESSAGE["processing_voice_input"])
 
@@ -198,7 +195,8 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
                             text_to_speech_handler=self._text_to_speech_handler)
 
                     if self._query in wake_words_to_self_describe:
-                        # TODO: Update the message below, and handle the message in a separate variable.
+                        # TODO: Update the message below, and handle the message
+                        # TODO: in a separate variable.
                         self._text_to_speech_handler.create_text_to_speech(
                             text_to_produce_speech=(
                                 "I'm Julie, a desktop assistant created by Reginald Chand."
@@ -209,7 +207,6 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
                 user_requested_prompt: str = (
                     self._gemini_handler.initiate_gemini_ai(prompt=str(self._voice_query)))
 
-                print(f"{user_requested_prompt}\n")
                 remove_asterisk_from_prompt = user_requested_prompt.replace("*", "")
 
                 self._text_to_speech_handler.create_text_to_speech(
