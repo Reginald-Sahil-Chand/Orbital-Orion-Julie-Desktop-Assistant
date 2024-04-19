@@ -54,6 +54,8 @@ class AbstractSpeechRecognitionWareHouse(ABC):
         self._supported_speech_recognizer_types: List[str] = (
             list(k for k in self._supported_speech_recognizer))
 
+    should_announce_error_message: bool = False
+
     @abstractmethod
     def initiate_speech_recognition(self, speech_recognizer: str) -> None:
         """Abstract method that initiates the create_speech_recognizer method.
@@ -106,7 +108,8 @@ class AbstractSpeechRecognitionWareHouse(ABC):
             query: str = func_speech_recognizer(
                 recognizer=recognizer,
                 audio=audio,
-                text_to_speech_handler=text_to_speech_handler)
+                text_to_speech_handler=text_to_speech_handler,
+                should_announce_error_message=self.should_announce_error_message)
 
             return query
 
