@@ -63,7 +63,7 @@ def open_application(query: str, text_to_speech_handler: Any) -> None:
 
     try:
         open_app(_queried_application_name, match_closest=True, throw_error=True)
-        text_to_speech_handler.create_text_to_speech_announcer(
+        text_to_speech_handler.create_text_to_speech(
                             text_to_produce_speech=f"{_queried_application_name} has been opened.")
 
     except Exception:
@@ -71,5 +71,5 @@ def open_application(query: str, text_to_speech_handler: Any) -> None:
         # queried application name, because if the queried application name is empty,
         # then speech_recognizer will handle those errors.
         if "Speech Recognition" not in _queried_application_name:
-            text_to_speech_handler.create_text_to_speech_announcer(
+            text_to_speech_handler.create_text_to_speech(
                                 text_to_produce_speech=_app_not_found_error)
