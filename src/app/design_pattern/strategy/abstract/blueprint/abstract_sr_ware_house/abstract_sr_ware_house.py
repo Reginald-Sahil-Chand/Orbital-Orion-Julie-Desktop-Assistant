@@ -47,7 +47,7 @@ class AbstractSpeechRecognitionWareHouse(ABC):
 
     _supported_speech_recognizer: Dict[str, Callable[..., (str | Any)]] =  field(
         default_factory=lambda: {
-        "google_voice_recognizer": google_speech_recognizer.google_speech_recognizer,
+        "google_speech_recognizer": google_speech_recognizer.google_speech_recognizer,
     })
 
     def __post_init__(self):
