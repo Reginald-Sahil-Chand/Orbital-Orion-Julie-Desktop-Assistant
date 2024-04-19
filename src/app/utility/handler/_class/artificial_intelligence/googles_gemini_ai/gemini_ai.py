@@ -55,6 +55,10 @@ class GeminiAi:
 
     _model_response: str = ""
 
+    # * Display this error message in the console if you want to. (Use this in exceptions).
+    _universal_error_message: str = (
+        "Could not communicate with GEMINI AI. Some error occurred. Please try Again!")
+
     def initiate_gemini_ai(self, prompt: str) -> str:
         """Initiate the Gemini AI model with the given prompt and return the generated response.
 
@@ -65,11 +69,16 @@ class GeminiAi:
             - str: The generated response from the AI model.
         """
 
-        # Feed the given prompt to the model.
-        response: genai.GenerativeModel = self._model.generate_content( # type: ignore
-            f"\"{prompt}\"")
+        try:
+            if not prompt.strip():
+                # Feed the given prompt to the model.
+                response: genai.GenerativeModel = self._model.generate_content( # type: ignore
+                f"\"{prompt}\"")
 
-        # Store the response in a separate variable to return later.
-        self._model_response: str = str(response.text) # type: ignore
+                # Store the response in a separate variable to return later.
+                self._model_response: str = str(response.text) # type: ignore
+
+        except Exception:
+            pass
 
         return self._model_response
