@@ -170,6 +170,7 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
         Returns: 
             - None.
         """
+        use_gemini_ai: bool = True
 
         while True:
             with self._microphone as source:
@@ -186,6 +187,7 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
 
                 while True:
                     self._set_speech_recognizer(speech_recognizer=speech_recognizer)
+
                     if ((self._query == wake_words_to_open_apps["wake_with_open"])
                         or
                         (self._query == wake_words_to_open_apps["wake_with_go_to"])):
@@ -199,21 +201,31 @@ class SRWareHouse(AbstractSpeechRecognitionWareHouse):
                         # TODO: in a separate variable.
                         self._text_to_speech_handler.create_text_to_speech(
                             text_to_produce_speech=(
-                                "I'm Julie, a desktop assistant created by Reginald Chand"
+                                "I'm Julie, a desktop assistant created by Reginald Chand!"
                                 "He created me as a personal project."))
+
+                    elif use_gemini_ai:
+                        self._use_gemini_ai()
 
                     else:
                         if self._query.strip():
                             self._text_to_speech_handler.create_text_to_speech(
-                            text_to_produce_speech=(
-                                "I'm sorry! I cant help you with this."))
+                               text_to_produce_speech=(
+                                   "Sorry! I cant help you with this. Please try something else!"))
 
-            else:
-                # * USE ARTIFICIAL INTELLIGENCE (GOOGLE'S GEMINI).
-                user_requested_prompt: str = (
-                    self._gemini_handler.initiate_gemini_ai(prompt=str(self._voice_query)))
+    def _use_gemini_ai(self) -> None:
+        """Communicates with Google's Gemini AI.
+        
+        - For API_KEY initialization -> REFER __init__.py
+        - Folder Reference: src/app/utility/handler/_class/artificial_intelligence/googles_gemini_ai
+        - To create an API -> REFER LINK TO GET AN API KEY: https://aistudio.google.com/app
+        """
 
-                remove_asterisk_from_prompt = user_requested_prompt.replace("*", "")
+        # * USE ARTIFICIAL INTELLIGENCE (GOOGLE'S GEMINI).
+        user_requested_prompt: str = (
+            self._gemini_handler.initiate_gemini_ai(prompt=self._query))
 
-                self._text_to_speech_handler.create_text_to_speech(
-                    text_to_produce_speech=remove_asterisk_from_prompt)
+        remove_asterisk_from_prompt = user_requested_prompt.replace("*", "")
+
+        self._text_to_speech_handler.create_text_to_speech(
+            text_to_produce_speech=remove_asterisk_from_prompt)
