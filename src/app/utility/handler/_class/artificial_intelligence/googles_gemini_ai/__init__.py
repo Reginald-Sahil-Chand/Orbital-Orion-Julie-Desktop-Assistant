@@ -5,8 +5,8 @@ This software is based on a space theme.
 All the functions, variables, and class names used are meaningful and follows a space theme.
 This codebase will consist of comments based on humors at minimum to cheer up other developers.
 
-init.py:
-========
+__init.py__:
+============
 This file contains Google's GEMINI AI API KEY which must be provided in order to use,
 GEMINI AI Service.
 
