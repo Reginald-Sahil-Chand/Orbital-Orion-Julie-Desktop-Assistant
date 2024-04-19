@@ -70,7 +70,7 @@ class GeminiAi:
         """
 
         try:
-            if not prompt.strip():
+            if prompt.strip():
                 # Feed the given prompt to the model.
                 response: genai.GenerativeModel = self._model.generate_content( # type: ignore
                 f"\"{prompt}\"")
