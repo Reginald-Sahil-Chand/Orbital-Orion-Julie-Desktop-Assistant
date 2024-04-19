@@ -71,12 +71,12 @@ def google_speech_recognizer(recognizer: Any, audio: AudioData, text_to_speech_h
 
     except UnknownValueError:
         print(_unknown_value_error_message)
-        text_to_speech_handler.create_text_to_speech_announcer(
+        text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech=_unknown_value_error_message)
 
     except RequestError:
         print(_request_error_message)
-        text_to_speech_handler.create_text_to_speech_announcer(
+        text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech=_request_error_message)
 
     return _query
