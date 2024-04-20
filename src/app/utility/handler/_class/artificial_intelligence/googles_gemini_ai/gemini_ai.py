@@ -38,6 +38,7 @@ from dataclasses import dataclass
 
 # Include external packages and modules.
 from google import generativeai as genai # type: ignore
+from google.api_core import exceptions
 
 # * LINK TO GET AN API KEY: https://aistudio.google.com/app
 genai.configure(api_key="YOUR_API_KEY") # type: ignore
@@ -81,7 +82,7 @@ class GeminiAi:
                 # Store the response in a separate variable to return later.
                 self._model_response: str = str(response.text) # type: ignore
 
-        except Exception:
+        except exceptions.InvalidArgument:
             pass
 
         return self._model_response
