@@ -35,7 +35,7 @@ from typing import Any
 # Include custom packages and modules.
 from src.app.utility.data._module.wake_words import wake_words_to_self_describe
 from src.app.utility.helper._module.app_opener.app_opener import open_application
-from src.app.home._class.start.sr_ware_house._internals.ai import gemini_ai
+from src.app.home._class.start.sr_ware_house._internals.ai import initiate_gemini_ai
 
 
 def initiate_julie(speech_recognizer: str,
@@ -71,6 +71,6 @@ def initiate_julie(speech_recognizer: str,
                     "He created me as a personal project."))
 
         else:
-            gemini_ai.gemini_ai(query=query,
+            initiate_gemini_ai.initiate_gemini_ai(query=query,
                       gemini_handler=gemini_handler,
                       text_to_speech_handler=text_to_speech_handler)
