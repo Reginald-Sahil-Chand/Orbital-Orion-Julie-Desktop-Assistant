@@ -39,6 +39,9 @@ from dataclasses import dataclass
 # Include external packages and modules.
 import google.generativeai as genai # type: ignore
 
+# * LINK TO GET AN API KEY: https://aistudio.google.com/app
+genai.configure(api_key="YOUR_API_KEY") # type: ignore
+
 
 @dataclass
 class GeminiAi:
