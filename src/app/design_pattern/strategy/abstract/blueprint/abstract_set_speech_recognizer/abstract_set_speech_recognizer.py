@@ -42,7 +42,7 @@ from src.app.utility.helper._module.speech_recognizer.google import google_speec
 
 
 @dataclass
-class AbstractSpeechRecognitionWareHouse(ABC):
+class AbstractSetSpeechRecognizer(ABC):
     """Abstract class to handle speech recognizer's."""
 
     _supported_speech_recognizer: Dict[str, Callable[..., (str | Any)]] =  field(
