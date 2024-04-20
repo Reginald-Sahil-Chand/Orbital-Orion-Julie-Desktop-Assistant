@@ -29,11 +29,15 @@ Some modules may have dependencies on external libraries.
 Refer to the module documentation for details.
 """
 
+# Include built-in packages and modules.
+import sys
+
 # Include internal typings.
 from typing import Any
 
 # Include custom packages and modules.
-from src.app.utility.data._module.wake_words import wake_words_to_self_describe
+from src.app.utility.data._module.wake_words import wake_words_to_self_describe,\
+    wake_words_to_exit_program
 from src.app.utility.helper._module.app_opener.app_opener import open_application
 from src.app.home._class.start.sr_ware_house._internals.ai import initiate_gemini_ai
 
@@ -69,6 +73,12 @@ def initiate_julie(speech_recognizer: str,
                 text_to_produce_speech=(
                     "I'm Julie, a desktop assistant created by Reginald Chand!"
                     "He created me as a personal project."))
+
+        elif query in wake_words_to_exit_program:
+            text_to_speech_handler.create_text_to_speech(
+                text_to_produce_speech=(
+                    "Thank you for using my service. Exiting Program. Take Care!"))
+            sys.exit(0)
 
         else:
             initiate_gemini_ai.initiate_gemini_ai(query=query,
