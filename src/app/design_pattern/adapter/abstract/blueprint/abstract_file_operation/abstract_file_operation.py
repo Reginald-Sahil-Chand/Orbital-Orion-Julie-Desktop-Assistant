@@ -189,11 +189,6 @@ class AbstractFileOperation(ABC):
                 log_type="error",
                 log_message=f"{file_mode or file_type} cannot be empty. {err}")
 
-        except Exception as err:
-            self._log_handler.create_log(
-                log_type="error",
-                log_message=f"An unknown error occurred. {err}")
-
         return None
 
     def adapter_creates_file(
