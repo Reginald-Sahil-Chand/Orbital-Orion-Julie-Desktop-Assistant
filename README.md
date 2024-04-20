@@ -30,7 +30,7 @@ cd orbital-orion-julie-desktop-assistant
 
 Run Orbital Orion Julie Desktop Assistant
 ***After installing the dependencies, run the main script to start Julie:
-python ```oojda_main.py```***
+```python oojda_main.py```***
 
 
 ## Copyright Notice
