@@ -7,7 +7,7 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 initiate_julie.py:
 ==================
-This file contains a method to initiate julie.
+This file contains a function to initiate julie.
 
 Guidelines:
 ===========
