@@ -43,8 +43,8 @@ wake_words_to_activate_julie: Tuple[str, ...] = (
 )
 
 wake_words_to_open_apps: Dict[str, str] = {
-        "wake_with_open": "",
-        "wake_with_go_to": "",
+        "wake_with_open": "open",
+        "wake_with_go_to": "go to",
     }
 
 wake_words_to_self_describe: Tuple[str, ...] = (
