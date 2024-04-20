@@ -17,7 +17,7 @@ Orbital Orion Julie is a console-based desktop assistant built using Python. It 
 
 ### Option 2: Clone Repository
 1. Clone the repository to your local machine using Git:
-```git clone [https://github.com/reginaldsahilchand/orion-julie.git](https://github.com/Reginald-Sahil-Chand/Orbital-Orion-Julie-Desktop-Assistant.git)```
+```git clone https://github.com/Reginald-Sahil-Chand/Orbital-Orion-Julie-Desktop-Assistant.git```
 
 2. Navigate to the cloned repository directory:
 cd orbital-orion-julie-desktop-assistant
