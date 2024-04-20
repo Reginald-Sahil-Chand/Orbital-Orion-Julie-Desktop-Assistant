@@ -54,7 +54,9 @@ def initiate_gemini_ai(query: str, gemini_handler: Any, text_to_speech_handler: 
 
     remove_asterisk_from_prompt = user_requested_prompt.replace("*", "")
 
-    print(f"{remove_asterisk_from_prompt}\n")
+    if user_requested_prompt.strip():
+        print(f"{remove_asterisk_from_prompt}\n")
+
     text_to_speech_handler.create_text_to_speech(
         text_to_produce_speech=remove_asterisk_from_prompt)
 
