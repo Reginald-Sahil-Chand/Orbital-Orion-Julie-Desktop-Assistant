@@ -55,6 +55,13 @@ class NotificationHandler:
             - None
         """
 
-        notification.notify(title=title, message=message,
+        try:
+            notification.notify(title=title, message=message,
                             app_name=app_name,
                             timeout=timeout) # type: ignore
+
+        except NotImplementedError:
+            pass
+
+        except ModuleNotFoundError:
+            pass
