@@ -38,15 +38,16 @@ from speech_recognition import Recognizer, Microphone, AudioData # type: ignore
 from memory_profiler import profile # type: ignore
 
 # Include custom packages and modules.
-from src.app.design_pattern.strategy.abstract.blueprint\
-    .abstract_sr_ware_house.abstract_sr_ware_house import AbstractSpeechRecognitionWareHouse
+from src.app.design_pattern.strategy.abstract.blueprint.abstract_set_speech_recognizer\
+    .abstract_set_speech_recognizer import AbstractSetSpeechRecognizer
 from src.app.utility.handler._class.text_to_speech.text_to_speech\
     import TextToSpeech
 from src.app.utility.data._module.wake_words import wake_words_to_activate_julie,\
     wake_words_to_open_apps
 
+
 @dataclass
-class SetSpeechRecognizer(AbstractSpeechRecognitionWareHouse):
+class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
     """Class responsible to create speech recognizer based on the chosen speech_recognizer."""
 
     # Instantiate TextToSpeechHandler.
