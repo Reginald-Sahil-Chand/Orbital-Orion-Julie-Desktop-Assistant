@@ -85,4 +85,19 @@ class GeminiAi:
         except exceptions.InvalidArgument:
             pass
 
+        except exceptions.RetryError:
+            pass
+
+        except exceptions.BadRequest:
+            pass
+
+        except exceptions.BadGateway:
+            pass
+
+        except exceptions.Forbidden:
+            pass
+
+        except exceptions.GoogleAPIError:
+            pass
+
         return self._model_response
