@@ -179,11 +179,6 @@ class AbstractFileOperation(ABC):
                 log_type="error",
                 log_message=f"File not found. Possible missing directory. {err}")
 
-        except PermissionError as err:
-            self._log_handler.create_log(
-                log_type="error",
-                log_message=f"File cannot be created. Permission denied. {err}")
-
         except JSONDecodeError as err:
             self._log_handler.create_log(
                 log_type="error",
