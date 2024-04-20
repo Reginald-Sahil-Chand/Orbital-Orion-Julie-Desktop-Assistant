@@ -32,7 +32,7 @@ Refer to the module documentation for details.
 """
 
 # Include internal typings.
-from typing import Dict, Tuple
+from typing import Tuple
 
 
 wake_words_to_activate_julie: Tuple[str, ...] = (
@@ -42,11 +42,12 @@ wake_words_to_activate_julie: Tuple[str, ...] = (
     "ok julie", "ok oojda", "ok orbital orion julie desktop assistant",
 )
 
-wake_words_to_open_apps: Dict[str, str] = {
-        "wake_with_open": "open",
-        "wake_with_go_to": "go to",
-    }
-
 wake_words_to_self_describe: Tuple[str, ...] = (
     "who are you", "tell me about yourself", "tell me about yourself"
+)
+
+wake_words_to_exit_program: Tuple[str, ...] = (
+    "exit", "bye", "good bye", "close program",
+    "exit program", "go away", "good night", "talk to you later",
+    "see you later"
 )
