@@ -45,6 +45,9 @@ from src.app.utility.handler._class.text_to_speech.text_to_speech\
 from src.app.utility.data._module.wake_words import wake_words_to_activate_julie,\
     wake_words_to_open_apps
 
+# ! DANGER: DISABLE ALL @profile DECORATOR'S BEFORE PUSHING THE CODE INTO PRODUCTION.
+# ! THIS IS TO AVOID UNNECESSARY MEMORY CONSUMPTION.
+
 
 @dataclass
 class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
