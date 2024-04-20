@@ -49,5 +49,5 @@ wake_words_to_self_describe: Tuple[str, ...] = (
 wake_words_to_exit_program: Tuple[str, ...] = (
     "exit", "bye", "good bye", "close program",
     "exit program", "go away", "good night", "talk to you later",
-    "see you later"
+    "see you later", "goodbye"
 )
