@@ -36,6 +36,9 @@ from typing import Any, List
 from AppOpener import open as open_app, give_appnames # type: ignore
 
 
+class AppNotFoundError(Exception):
+    """Handle app not found error."""
+
 def open_application(query: str, text_to_speech_handler: Any) -> None:
     """Opens an application based on the provided query using AppOpener.
 
@@ -85,7 +88,7 @@ def open_application(query: str, text_to_speech_handler: Any) -> None:
             text_to_speech_handler.create_text_to_speech(
                 text_to_produce_speech=_app_not_found_error)
 
-    except Exception:
+    except AppNotFoundError:
         # We only speak the exception if "Speech Recognition" is not in the,
         # queried application name, because if the queried application name is empty,
         # then speech_recognizer will handle those errors.
