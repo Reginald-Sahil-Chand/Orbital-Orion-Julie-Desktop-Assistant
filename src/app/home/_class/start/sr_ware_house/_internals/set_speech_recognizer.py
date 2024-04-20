@@ -35,18 +35,12 @@ from dataclasses import dataclass, field
 
 # Include external packages and modules.
 from speech_recognition import Recognizer, Microphone, AudioData # type: ignore
-from memory_profiler import profile # type: ignore
 
 # Include custom packages and modules.
 from src.app.design_pattern.strategy.abstract.blueprint.abstract_set_speech_recognizer\
     .abstract_set_speech_recognizer import AbstractSetSpeechRecognizer
 from src.app.utility.handler._class.text_to_speech.text_to_speech\
     import TextToSpeech
-from src.app.utility.data._module.wake_words import wake_words_to_activate_julie,\
-    wake_words_to_open_apps
-
-# ! DANGER: DISABLE ALL @profile DECORATOR'S BEFORE PUSHING THE CODE INTO PRODUCTION.
-# ! THIS IS TO AVOID UNNECESSARY MEMORY CONSUMPTION.
 
 
 @dataclass
@@ -61,9 +55,7 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
     _microphone: Microphone = Microphone()
 
     _voice_query: str = ""
-    _query: str = ""
 
-    @profile
     def initiate_speech_recognition(self, speech_recognizer: str) -> str:
         """This method initiates the create_speech_recognizer method.
 
@@ -80,6 +72,11 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
             - str: The voice query.
         """
 
+        self.should_announce_error_message = True
+
+        self._text_to_speech_handler.create_text_to_speech(
+            text_to_produce_speech="How can I assist you today?")
+
         with self._microphone as source:
             audio: AudioData = self._recognizer.listen(source) # type: ignore
 
@@ -89,21 +86,36 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
             audio=audio,
             text_to_speech_handler=self._text_to_speech_handler))
 
-        self._query = self._voice_query.lower()
+        self._text_to_speech_handler.create_text_to_speech(
+            text_to_produce_speech="Searching for relevant results. Please wait!")
 
-        if self._query in wake_words_to_activate_julie:
-            self.should_announce_error_message = True
+        return self._voice_query.lower()
 
-            self._text_to_speech_handler.create_text_to_speech(
-                text_to_produce_speech="How can I assist you today?")
+    def initiate_speech_recognition_once(self, speech_recognizer: str) -> str:
+        """This method initiates the create_speech_recognizer method.
 
-            with self._microphone as source:
-                audio: AudioData = self._recognizer.listen(source) # type: ignore
+        Summary:
+            - After the initiation of the create_speech_recognizer method the,
+            returned value (voice input) from that method is passed down to the required,
+            classes and functions that use it as needed.
 
-            self._text_to_speech_handler.create_text_to_speech(
-                text_to_produce_speech="Searching for relevant results. Please wait!")
+        Args:
+            - speech_recognizer (str): The speech recognizer name that will be used,
+            to distinguish between the supported speech recognizer's.
+        
+        Returns: 
+            - str: The voice query.
 
-            wake_words_to_open_apps["wake_with_open"] = f"open {self._query[5::]}"
-            wake_words_to_open_apps["wake_with_go_to"] = f"open {self._query[6::]}"
+        Note: Only use this method if your are to initiate voice recognition once,
+        """
 
-        return self._query
+        with self._microphone as source:
+            audio: AudioData = self._recognizer.listen(source) # type: ignore
+
+        self._voice_query = str(self.create_speech_recognizer(
+            speech_recognizer=speech_recognizer,
+            recognizer=self._recognizer,
+            audio=audio,
+            text_to_speech_handler=self._text_to_speech_handler))
+
+        return self._voice_query.lower()
