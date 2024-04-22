@@ -7,11 +7,10 @@ This codebase will consist of comments based on humors at minimum to cheer up ot
 
 gemini_ai.py:
 =============
-This file contains a class that communicates with, Google's Gemini AI API,
-- Initiate the class.
+This file contains a function that communicates with, Google's Gemini AI API,
+- Initiate the function.
 - Get the voice or text input as text to feed the AI.
 - Generate the response based on the given input.
-- Return back the generated response.
 
 Guidelines:
 ===========
@@ -33,8 +32,7 @@ Some modules may have dependencies on external libraries.
 Refer to the module documentation for details.
 """
 
-# Include built-in packages and modules.
-from dataclasses import dataclass
+
 
 # Include internal typings.
 from typing import Any
@@ -62,23 +60,17 @@ def initiate_gemini_ai(prompt: str, text_to_speech_handler: Any) -> None:
     """
 
     try:
-        if prompt.strip():
-            # Feed the given prompt to the model.
-            response: genai.GenerativeModel = MODEL.generate_content( # type: ignore
-            f"\"{prompt}\"")
+        # Feed the given prompt to the model.
+        response: genai.GenerativeModel = MODEL.generate_content( # type: ignore
+        f"\"{prompt}\"")
 
-            # Store the response in a separate variable to return later.
-            _model_response: str = str(response.text.replace("*", "")) # type: ignore
+        # Store the response in a separate variable to return later.
+        _model_response: str = str(response.text.replace("*", "")) # type: ignore
 
-            print(f"WARNING: AI GENERATED CONTENT | CAN BE INCORRECT.\n\n{_model_response}\n")
+        print(f"WARNING: AI GENERATED CONTENT | CAN BE INCORRECT.\n\n{_model_response}\n")
 
-            text_to_speech_handler.create_text_to_speech(
-                text_to_produce_speech=_model_response)
-
-        else:
-            text_to_speech_handler.create_text_to_speech(
-                        text_to_produce_speech=(
-                            "Sorry! I cant help you with this. Please try something else!"))
+        text_to_speech_handler.create_text_to_speech(
+            text_to_produce_speech=_model_response)
 
     except exceptions.InvalidArgument:
         pass
