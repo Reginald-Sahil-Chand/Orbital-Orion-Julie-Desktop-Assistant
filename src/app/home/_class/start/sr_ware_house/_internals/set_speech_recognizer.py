@@ -72,8 +72,6 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
             - str: The voice query.
         """
 
-        self.should_announce_error_message = True
-
         self._text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech="How can I assist you today?")
 
@@ -84,7 +82,8 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
             speech_recognizer=speech_recognizer,
             recognizer=self._recognizer,
             audio=audio,
-            text_to_speech_handler=self._text_to_speech_handler))
+            text_to_speech_handler=self._text_to_speech_handler),
+            should_announce_error_message=True)
 
         self._text_to_speech_handler.create_text_to_speech(
             text_to_produce_speech="Searching for relevant results. Please wait!")
