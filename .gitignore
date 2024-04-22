@@ -161,5 +161,7 @@ cython_debug/
 
 # OODJA GENERATED FOLDERS AND FILES
 oojda
+oojda_main.dist
+oojda_main.build
 oojda_main.cmd
 oojda_main.exe
