@@ -31,7 +31,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
-import logging
+from logging import disable
 
 # Include internal typings.
 from typing import Any
@@ -46,7 +46,7 @@ from src.app.utility.handler._class.log_handler.log_handler import LogHandler
 # ! ALERT: ONLY DISABLE THE LOGS IN PRODUCTION. DO NOT DISABLE ELSE, OTHERWISE,
 # ! ALERT: IT MAY BE HARD FOR YOU TO DEBUG ERRORS.
 # * TO ENABLE LOGGING SIMPLY COMMENT "logging.disable()"
-logging.disable()
+disable()
 
 
 @dataclass
