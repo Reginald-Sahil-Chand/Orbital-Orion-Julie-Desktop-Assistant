@@ -31,6 +31,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 import sys
+from time import sleep
 
 # Include internal typings.
 from typing import Any
@@ -39,7 +40,8 @@ from typing import Any
 from src.app.utility.data._module.wake_words import wake_words_to_self_describe,\
     wake_words_to_exit_program
 from src.app.utility.helper._module.app_opener.app_opener import open_application
-from src.app.utility.helper._module.artificial_intelligence.googles_gemini_ai.gemini_ai import initiate_gemini_ai
+from src.app.utility.helper._module.artificial_intelligence.googles_gemini_ai.gemini_ai\
+    import initiate_gemini_ai
 
 
 def initiate_julie(speech_recognizer: str,
@@ -58,25 +60,35 @@ def initiate_julie(speech_recognizer: str,
         - None.
     """
 
+    _use_ai: bool = True
+
     while True:
         query = set_speech_recognizer.initiate_speech_recognition(
             speech_recognizer=speech_recognizer)
 
-        if (query in f"open {query[5::]}" or query in f"go to {query[6::]}"):
-            open_application(query=query,
+        sleep(1)
+
+        if query.strip():
+            if (query in f"open {query[5::]}" or query in f"go to {query[6::]}"):
+                open_application(query=query,
                 text_to_speech_handler=text_to_speech_handler)
 
-        elif query in wake_words_to_self_describe:
-            text_to_speech_handler.create_text_to_speech(
-                text_to_produce_speech=(
-                    "I'm Julie, a desktop assistant created by Reginald Chand!"
-                    "He created me as a personal project."))
+            elif query in wake_words_to_self_describe:
+                text_to_speech_handler.create_text_to_speech(
+                    text_to_produce_speech=(
+                        "I'm Julie, a desktop assistant created by Reginald Chand!"
+                        "He created me as a personal project."))
 
-        elif query in wake_words_to_exit_program:
-            text_to_speech_handler.create_text_to_speech(
-                text_to_produce_speech=(
-                    "Thank you for using my service. Exiting Program. Take Care!"))
-            sys.exit(0)
+            elif query in wake_words_to_exit_program:
+                text_to_speech_handler.create_text_to_speech(
+                    text_to_produce_speech=(
+                        "Thank you for using my service. Exiting Program. Take Care!"))
+                sys.exit(0)
 
-        else:
-            initiate_gemini_ai(prompt=query, text_to_speech_handler=text_to_speech_handler)
+            elif _use_ai:
+                initiate_gemini_ai(prompt=query, text_to_speech_handler=text_to_speech_handler)
+
+            else:
+                text_to_speech_handler.create_text_to_speech(
+                text_to_produce_speech=(
+                    "Sorry! I cant help you with this. Please try something else!"))
