@@ -87,7 +87,7 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
 
         if self._voice_query.strip():
             self._text_to_speech_handler.create_text_to_speech(
-            text_to_produce_speech="Okay! Please wait!")
+            text_to_produce_speech="Please wait!")
 
         return self._voice_query.lower()
 
