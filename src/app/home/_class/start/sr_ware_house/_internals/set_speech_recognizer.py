@@ -78,15 +78,16 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
         with self._microphone as source:
             audio: AudioData = self._recognizer.listen(source) # type: ignore
 
-        self._voice_query = str(self.create_speech_recognizer(
+        self._voice_query = self.create_speech_recognizer(
             speech_recognizer=speech_recognizer,
             recognizer=self._recognizer,
             audio=audio,
-            text_to_speech_handler=self._text_to_speech_handler),
+            text_to_speech_handler=self._text_to_speech_handler,
             should_announce_error_message=True)
 
-        self._text_to_speech_handler.create_text_to_speech(
-            text_to_produce_speech="Searching for relevant results. Please wait!")
+        if self._voice_query.strip():
+            self._text_to_speech_handler.create_text_to_speech(
+            text_to_produce_speech="Okay! Please wait!")
 
         return self._voice_query.lower()
 
@@ -111,10 +112,10 @@ class SetSpeechRecognizer(AbstractSetSpeechRecognizer):
         with self._microphone as source:
             audio: AudioData = self._recognizer.listen(source) # type: ignore
 
-        self._voice_query = str(self.create_speech_recognizer(
+        self._voice_query = self.create_speech_recognizer(
             speech_recognizer=speech_recognizer,
             recognizer=self._recognizer,
             audio=audio,
-            text_to_speech_handler=self._text_to_speech_handler))
+            text_to_speech_handler=self._text_to_speech_handler)
 
         return self._voice_query.lower()
