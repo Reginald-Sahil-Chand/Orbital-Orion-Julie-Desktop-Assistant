@@ -91,12 +91,6 @@ class OojdaControlPanel:
         initiate_speech_recognition: SRWareHouse = SRWareHouse()
         initiate_speech_recognition.initiate_speech_recognition(
             speech_recognizer="google_speech_recognizer")
-        
-        notification_handler.create_notification(
-            title="Orbital Orion Julie Desktop Assistant",
-            message="Program Terminated.",
-            app_name="Orbital Orion Julie Desktop Assistant",
-            timeout=10)
 
     @staticmethod
     def initiate_oojda_launch_service() -> None:
