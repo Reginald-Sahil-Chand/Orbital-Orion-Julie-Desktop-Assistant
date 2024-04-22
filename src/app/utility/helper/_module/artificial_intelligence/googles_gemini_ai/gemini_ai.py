@@ -33,7 +33,6 @@ Refer to the module documentation for details.
 """
 
 
-
 # Include internal typings.
 from typing import Any
 
@@ -47,6 +46,11 @@ genai.configure(api_key="YOUR_API_KEY") # type: ignore
 # Choose which AI/LLM model to use.
 MODEL = genai.GenerativeModel('gemini-pro')
 
+
+def _speak_error(text_to_speech_handler: Any):
+    text_to_speech_handler.create_text_to_speech(
+        text_to_produce_speech=(
+            "Sorry! I cant help you with this. Please try something else!"))
 
 def initiate_gemini_ai(prompt: str, text_to_speech_handler: Any) -> None:
     """Initiate the Gemini AI model with the given prompt and produce the requested data.
@@ -73,19 +77,19 @@ def initiate_gemini_ai(prompt: str, text_to_speech_handler: Any) -> None:
             text_to_produce_speech=_model_response)
 
     except exceptions.InvalidArgument:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
 
     except exceptions.RetryError:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
 
     except exceptions.BadRequest:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
 
     except exceptions.BadGateway:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
 
     except exceptions.Forbidden:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
 
     except exceptions.GoogleAPIError:
-        pass
+        _speak_error(text_to_speech_handler=text_to_speech_handler)
