@@ -39,13 +39,12 @@ from typing import Any
 from src.app.utility.data._module.wake_words import wake_words_to_self_describe,\
     wake_words_to_exit_program
 from src.app.utility.helper._module.app_opener.app_opener import open_application
-from src.app.home._class.start.sr_ware_house._internals.ai import initiate_gemini_ai
+from src.app.utility.helper._module.artificial_intelligence.googles_gemini_ai.gemini_ai import initiate_gemini_ai
 
 
 def initiate_julie(speech_recognizer: str,
                    set_speech_recognizer: Any,
-                   text_to_speech_handler: Any,
-                   gemini_handler: Any) -> None:
+                   text_to_speech_handler: Any) -> None:
     """Initiates awakening of Julie to perform tasks.
 
     Args:
@@ -54,7 +53,6 @@ def initiate_julie(speech_recognizer: str,
         awakening process.
         - text_to_speech_handler (Any): The text_to_speech_handler object to be used for
         speaking text.
-        - gemini_handler (Any): The gemini_handler object to be used for generating ai response.
 
     Returns: 
         - None.
@@ -81,6 +79,4 @@ def initiate_julie(speech_recognizer: str,
             sys.exit(0)
 
         else:
-            initiate_gemini_ai.initiate_gemini_ai(query=query,
-                      gemini_handler=gemini_handler,
-                      text_to_speech_handler=text_to_speech_handler)
+            initiate_gemini_ai(prompt=query, text_to_speech_handler=text_to_speech_handler)
