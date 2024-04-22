@@ -108,7 +108,7 @@ class SRWareHouse():
                         speech_recognizer=speech_recognizer,
                         set_speech_recognizer=self._set_speech_recognizer,
                         text_to_speech_handler=self._text_to_speech_handler)
-            
+
                 sleep(1)
 
         except KeyboardInterrupt:
