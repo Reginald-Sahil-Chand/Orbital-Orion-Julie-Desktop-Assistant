@@ -32,6 +32,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
+from time import sleep
 
 # Include internal typings.
 from typing import Dict
@@ -107,6 +108,8 @@ class SRWareHouse():
                         speech_recognizer=speech_recognizer,
                         set_speech_recognizer=self._set_speech_recognizer,
                         text_to_speech_handler=self._text_to_speech_handler)
+            
+                sleep(1)
 
         except KeyboardInterrupt:
             print(_ANNOUNCEMENT_MESSAGE["termination_message"])
