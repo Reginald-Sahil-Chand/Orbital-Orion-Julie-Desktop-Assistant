@@ -70,7 +70,7 @@ def initiate_gemini_ai(prompt: str, text_to_speech_handler: Any) -> None:
             # Store the response in a separate variable to return later.
             _model_response: str = str(response.text.replace("*", "")) # type: ignore
 
-            print(f"WARNING: AI GENERATED CONTENT | CAN BE INCORRECT.\n{_model_response}\n")
+            print(f"WARNING: AI GENERATED CONTENT | CAN BE INCORRECT.\n\n{_model_response}\n")
 
             text_to_speech_handler.create_text_to_speech(
                 text_to_produce_speech=_model_response)
