@@ -49,6 +49,8 @@ Refer to the module documentation for details.
 from dataclasses import dataclass
 
 # Include custom packages and modules.
+from src.app.utility.handler._class.notification_handler.notification_handler\
+    import NotificationHandler
 from src.app.home._class.screen.welcome_screen.welcome_screen import WelcomeScreen
 from src.app.home._class.user_information.user_information import UserInformation
 from src.app.home._class.start.sr_ware_house.sr_ware_house import SRWareHouse
@@ -74,6 +76,13 @@ class OojdaControlPanel:
         """
 
         # Instantiate classes.
+        notification_handler: NotificationHandler =  NotificationHandler()
+        notification_handler.create_notification(
+            title="Orbital Orion Julie Desktop Assistant",
+            message="Running in background.",
+            app_name="Orbital Orion Julie Desktop Assistant",
+            timeout=10)
+
         welcome_screen: WelcomeScreen = WelcomeScreen()
         welcome_screen.create_welcome_screen()
 

@@ -54,8 +54,6 @@ class AbstractSetSpeechRecognizer(ABC):
         self._supported_speech_recognizer_types: List[str] = (
             list(k for k in self._supported_speech_recognizer))
 
-    should_announce_error_message: bool = False
-
     @abstractmethod
     def initiate_speech_recognition(self, speech_recognizer: str) -> str:
         """Abstract method that initiates the create_speech_recognizer method.
@@ -73,15 +71,10 @@ class AbstractSetSpeechRecognizer(ABC):
             - str: The voice query.
         """
 
-    def create_speech_recognizer(
-            self,
-            speech_recognizer: str,
-            recognizer: Any,
-            audio: Any,
-            text_to_speech_handler: Any) -> (str | None):
+    def create_speech_recognizer(self, **kwargs) -> (str | None):
         """Creates a voice recognizer based on the specified speech recognizer name.
 
-        Args:
+        KwArgs:
             - self: The instance of the class.
             - speech_recognizer (str): The name of the speech recognizer to create.
             - recognizer (Any): The recognizer object used for speech recognition.
@@ -98,6 +91,13 @@ class AbstractSetSpeechRecognizer(ABC):
             speech recognition.
         """
 
+        speech_recognizer: str = kwargs.get("speech_recognizer", None)
+        recognizer: Any = kwargs.get("recognizer", None)
+        audio: Any = kwargs.get("audio", None)
+        text_to_speech_handler: Any = kwargs.get("text_to_speech_handler", None)
+        should_announce_error_message: bool = kwargs.get(
+            "should_announce_error_message", False)
+
         if speech_recognizer not in self._supported_speech_recognizer:
             raise TypeError(
                 f"Alert: The type {speech_recognizer} is not supported.\n"
@@ -109,7 +109,7 @@ class AbstractSetSpeechRecognizer(ABC):
                 recognizer=recognizer,
                 audio=audio,
                 text_to_speech_handler=text_to_speech_handler,
-                should_announce_error_message=self.should_announce_error_message)
+                should_announce_error_message=should_announce_error_message)
 
             return query
 

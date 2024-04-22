@@ -32,6 +32,7 @@ Refer to the module documentation for details.
 
 # Include built-in packages and modules.
 from dataclasses import dataclass, field
+from time import sleep
 
 # Include internal typings.
 from typing import Dict
@@ -43,8 +44,6 @@ from memory_profiler import profile # type: ignore
 # Include custom packages and modules.
 from src.app.utility.handler._class.text_to_speech.text_to_speech\
     import TextToSpeech
-from src.app.utility.handler._class.artificial_intelligence\
-    .googles_gemini_ai.gemini_ai import GeminiAi
 from src.app.home._class.start.sr_ware_house._internals.set_speech_recognizer\
     import SetSpeechRecognizer
 from src.app.home._class.start.sr_ware_house._internals.initiate_julie import initiate_julie
@@ -69,9 +68,6 @@ class SRWareHouse():
 
     # Instantiate TextToSpeechHandler.
     _text_to_speech_handler: TextToSpeech = field(default_factory=TextToSpeech)
-
-    # Instantiate GeminiHandler.
-    _gemini_handler: GeminiAi = field(default_factory=GeminiAi)
 
     # Instantiate SetSpeechRecognizer.
     _set_speech_recognizer: SetSpeechRecognizer = field(default_factory=SetSpeechRecognizer)
@@ -111,8 +107,9 @@ class SRWareHouse():
                     initiate_julie(
                         speech_recognizer=speech_recognizer,
                         set_speech_recognizer=self._set_speech_recognizer,
-                        text_to_speech_handler=self._text_to_speech_handler,
-                        gemini_handler=self._gemini_handler)
+                        text_to_speech_handler=self._text_to_speech_handler)
+
+                sleep(1)
 
         except KeyboardInterrupt:
             print(_ANNOUNCEMENT_MESSAGE["termination_message"])
