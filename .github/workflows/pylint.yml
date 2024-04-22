@@ -22,3 +22,4 @@ jobs:
       - name: Analysing the code with pylint
         run: |
           pylint $(git ls-files '*.py')
+          pylint src/ --disable=E0611,E0401  # Ignore specific errors (Got false positives).
