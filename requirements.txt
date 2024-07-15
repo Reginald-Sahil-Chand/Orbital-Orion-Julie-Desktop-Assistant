@@ -1,7 +1,7 @@
 annotated-types==0.6.0
 appopener==1.7
 cachetools==5.3.3
-certifi==2024.2.2
+certifi==2024.7.4
 charset-normalizer==3.3.2
 colorama==0.4.6
 comtypes==1.4.1
@@ -31,12 +31,12 @@ pypiwin32==223
 pyttsx3==2.90
 pywin32==306
 regex==2024.4.16
-requests==2.31.0
+requests==2.32.2
 rsa==4.9
-setuptools==69.5.1
+setuptools==70.0.0
 SpeechRecognition==3.10.3
-tqdm==4.66.2
+tqdm==4.66.3
 typing_extensions==4.11.0
 uritemplate==4.1.1
-urllib3==2.2.1
+urllib3==2.2.2
 wheel==0.43.0
